@@ -2,7 +2,6 @@ import javax.swing.*; // provides us with the classes and fields for GUI creatio
 import java.awt.*; // provides us with the classes and fields for GUI creation and management
 import java.awt.event.ActionEvent; // provides us with the possible events to listen for
 import java.awt.event.ActionListener; // provides us with listeners to detect events (like clicking a button)
-
 public class MainMenu extends JPanel {
     // private JFrame frame;
 
