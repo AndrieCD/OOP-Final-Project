@@ -1,3 +1,5 @@
+package prototypes;
+
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Random;
@@ -6,23 +8,6 @@ import java.util.TimerTask;
 
 public class SlotPrototype {
     public static void main(String[] args) {
-        Timer timer = new Timer();
-
-        TimerTask task = new TimerTask() {
-            private int seconds = 0;
-
-            @Override
-            public void run() {
-                seconds++;
-                System.out.println("Timer: " + seconds + " seconds");
-                if (seconds == 5) {
-                    timer.cancel();
-                    System.exit(0);
-                }
-            }
-        };
-
-        timer.scheduleAtFixedRate(task, 0, 1000);
 
         // store our icons in an array
         String[] icons = { "Seven", "Cherry", "Bar", "Star" };
