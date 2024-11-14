@@ -21,11 +21,18 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
         add(backgroundImage);
     }
 
-    // helper method ...
+    // helper methods ...
     protected JButton addButton(String text, ActionListener listener) {
         JButton button = new JButton(text);
         button.addActionListener(listener);
         buttonPanel.add(button);
         return button;
+    }
+
+    protected void navigateTo(JPanel panel) {
+        frame.getContentPane().removeAll();
+        frame.add(panel);
+        frame.revalidate();
+        frame.repaint();
     }
 }
