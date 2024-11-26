@@ -25,6 +25,9 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
     protected JButton addButton(String text, ActionListener listener) {
         JButton button = new JButton(text);
 
+        // disable focus on text
+        button.setFocusable(false);
+
         // Set font and size
         button.setFont(new Font("Trebuchet MS", Font.BOLD, 18));
 
@@ -39,11 +42,36 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
         buttonPanel.add(button);
         return button;
     }
-    
+
     protected void navigateTo(JPanel panel) {
         frame.getContentPane().removeAll();
         frame.add(panel);
         frame.revalidate();
         frame.repaint();
+    }
+}
+
+class MainMenu extends BaseMenu {
+
+    public MainMenu(JFrame frame) {
+        super(frame);
+
+        // add buttons ([STRING_LABEL] , [ACTION])
+        addButton("START", e -> navigateTo(new GameMenu(frame)));
+        addButton("SCORES", e -> JOptionPane.showMessageDialog(frame, "scorerere"));
+        addButton("EXIT", e -> System.exit(0));
+    }
+}
+
+class GameMenu extends BaseMenu {
+
+    public GameMenu(JFrame frame) {
+        super(frame);
+
+        // add buttons ([STRING_LABEL] , [ACTION])
+        addButton("SLOT MACHINE", e -> navigateTo(new SlotMachine(frame)));
+        addButton("LUCKY9", e -> JOptionPane.showMessageDialog(frame, "luckyy"));
+        addButton("BALANCE", e -> JOptionPane.showMessageDialog(frame, "balbalbal"));
+        addButton("BACK", e -> navigateTo(new MainMenu(frame)));
     }
 }

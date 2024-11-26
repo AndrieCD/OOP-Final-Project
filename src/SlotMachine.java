@@ -16,6 +16,7 @@ public class SlotMachine extends Game {
     private JLabel icon1, icon2, icon3;
     private JLabel moneyLabel;
     private String[] result;
+    private JPanel bottomPanel;
 
     public SlotMachine(JFrame frame) {
         super(frame);
@@ -66,14 +67,19 @@ public class SlotMachine extends Game {
 
     private void initializeDisplay() {
         // create a label to display the player's money, set properties
-        moneyLabel = new JLabel();
-        moneyLabel.setText("Money: " + Game.money);
+        bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.setOpaque(false);
+
+        moneyLabel = new JLabel("Money: " + Game.money);
         moneyLabel.setForeground(Color.WHITE);
-        topPanel.add(moneyLabel, BorderLayout.EAST);
+        moneyLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        bottomPanel.add(moneyLabel, BorderLayout.SOUTH);
+        background.add(bottomPanel, BorderLayout.SOUTH);
 
         // create the panel for the slot machine's icons
         JPanel iconPanel = new JPanel();
-        iconPanel.setBorder(BorderFactory.createEmptyBorder(75, 75, 150, 75));
+        iconPanel.setBorder(BorderFactory.createEmptyBorder(200, 75, 0, 75));
         iconPanel.setOpaque(false);
 
         // create the labels using the helper method
@@ -86,10 +92,10 @@ public class SlotMachine extends Game {
         iconPanel.add(icon2);
         iconPanel.add(icon3);
 
-        backgroundImage.add(iconPanel, BorderLayout.CENTER);
+        background.add(iconPanel, BorderLayout.CENTER);
 
         addButton("SPIN", e -> spin());
-        addButton("BET", e -> bet());
+        bet();
     }
 
     // ---------SPIN METHOD------------//
@@ -203,62 +209,56 @@ public class SlotMachine extends Game {
     // ---------BET METHOD------------//
     // ---------BET METHOD------------//
     protected void bet() {
-        if (this.isSpinning == true) // disable betting when currently spinning
-            return;
+        // Create a panel for the betting GUI
+        JPanel bettingPanel = new JPanel(new FlowLayout());
+        bettingPanel.setOpaque(false); // Transparent background
 
-        while (true) {
+        // Input field for the bet amount
+        JTextField betInput = new JTextField(10); // Single-line input
+        betInput.setFont(new Font("Trebuchet MS", Font.PLAIN, 16));
+        betInput.setToolTipText("Enter your bet here");
+
+        // Confirm bet button
+        JButton confirmBetButton = new JButton("Confirm Bet");
+        confirmBetButton.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
+        confirmBetButton.setBackground(new Color(0, 128, 0)); // Green
+        confirmBetButton.setForeground(Color.WHITE);
+
+        // Add components to the betting panel
+        bettingPanel.add(new JLabel("Enter Bet:"));
+        bettingPanel.add(betInput);
+        bettingPanel.add(confirmBetButton);
+
+        // Add the betting panel to the top of the bottom panel
+        bottomPanel.add(bettingPanel, BorderLayout.NORTH);
+
+        // Action listener for the confirm bet button
+        confirmBetButton.addActionListener(e -> {
+            if (isSpinning) {
+                JOptionPane.showMessageDialog(null, "You cannot bet while spinning!", "Error",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             try {
+                // Validate input
+                String input = betInput.getText().trim();
+                int validateBet = Integer.parseInt(input);
 
-                // create a textfield to get user input via GUI
-                JTextField betField = new JTextField(5);
-
-                // input prompt with an option pane / mini window
-                int result = JOptionPane.showConfirmDialog(null, betField, "Enter Bet Amount",
-                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-                // check if user OK or not
-                if (result == JOptionPane.CANCEL_OPTION || result == JOptionPane.CLOSED_OPTION) {
-                    System.out.println("Betting canceled.");
-                    return; // exit from this method
-                }
-
-                // convert the string from textfield to an integer
-                int validateBet = Integer.parseInt(betField.getText().trim()); // get the text from the field then
-                                                                               // remove spaces
-
-                // check if bet is valid
-                if (validateBet > money) {
-                    // this is the exception and its error message
+                if (validateBet > Game.money) {
                     throw new IllegalArgumentException("Bet exceeds available money!");
                 } else if (validateBet <= 0) {
-                    // this is the exception and its error message
-                    throw new IllegalArgumentException("Bet must be a positive amount!");
+                    throw new IllegalArgumentException("Bet must be greater than zero!");
                 }
 
-                // if the player changes their bet, the previous bet
-                // (if there's any, hence we check if its not 0) will be added to money
-                if (this.bet != 0)
-                    Game.money += this.bet;
-
-                // if input is valid, assign the value to the primary bet variable
+                // Update bet and clear input
                 this.bet = validateBet;
-                System.out.println("Bet placed: " + this.bet);
-
-                // subtract the bet from the player's money
-                Game.money -= this.bet;
-                // refresh money label
-                moneyLabel.setText("Money: " + Game.money);
-                break;
-
-            } catch (NumberFormatException e) {
-                // if the input is not a number, show this error message --> from parseInt()
-                // example, input = "abc" or "1.2"
-                JOptionPane.showMessageDialog(null, "Invalid input. Please enter an integer.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            } catch (IllegalArgumentException e) {
-                // if bet exceeds the bet range, show catch the exception
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Invalid input! Please enter a numeric value.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }
+        });
     }
 }

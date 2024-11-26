@@ -3,12 +3,11 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public abstract class Game extends JPanel implements BaseDisplay {
-    protected static GameTimer timer;
     protected JFrame frame;
     protected JPanel buttonPanel;
     protected JPanel topPanel;
     protected JPanel backButtPanel;
-    protected JLabel backgroundImage;
+    protected JLabel background;
     public static int money = 1000;
     public int bet;
     public double multiplier;
@@ -18,19 +17,16 @@ public abstract class Game extends JPanel implements BaseDisplay {
         setLayout(new BorderLayout());
 
         // background!
-        backgroundImage = new JLabel(BaseDisplay.background);
-        backgroundImage.setLayout(new BorderLayout());
+        background = new JLabel(BaseDisplay.background);
+        background.setLayout(new BorderLayout());
 
         // buttons panel
         buttonPanel = new JPanel();
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(75, 150, 150, 150));
         buttonPanel.setOpaque(false);
 
-        backgroundImage.add(buttonPanel, BorderLayout.SOUTH);
+        background.add(buttonPanel, BorderLayout.SOUTH);
 
-        /////////////////////////   /////////////////////////   /////////////////////////   
-        /////////////////////////   BACK BUTTON MISSING    /// BORDERLAYOUT ERROR???
-        /////////////////////////   /////////////////////////   /////////////////////////   
         // BACK BUTTON
         backButtPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         backButtPanel.setOpaque(false);
@@ -38,18 +34,10 @@ public abstract class Game extends JPanel implements BaseDisplay {
         backButton.setPreferredSize(new Dimension(45, 45)); // Set button size
         backButton.addActionListener(e -> play());
         backButtPanel.add(backButton);
-        backgroundImage.add(backButtPanel, BorderLayout.NORTH);
-
-        // add gameTimer on bottom-left corner of the window
-        topPanel = new JPanel(new BorderLayout());
-        topPanel.setOpaque(false);
-        if (timer == null)
-            timer = new GameTimer(frame);
-        topPanel.add(timer);
-        backgroundImage.add(topPanel, BorderLayout.NORTH);
+        background.add(backButtPanel, BorderLayout.NORTH);
 
         // add background image to the main panel
-        add(backgroundImage, BorderLayout.CENTER);
+        add(background, BorderLayout.CENTER);
 
         // init game variables
         this.multiplier = 0;
