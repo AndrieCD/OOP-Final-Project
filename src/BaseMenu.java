@@ -51,6 +51,8 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
     }
 }
 
+////////////////////////////////
+//////////MAIN MENU/////////////
 class MainMenu extends BaseMenu {
 
     public MainMenu(JFrame frame) {
@@ -63,6 +65,8 @@ class MainMenu extends BaseMenu {
     }
 }
 
+////////////////////////////////
+//////////GAME MENU/////////////
 class GameMenu extends BaseMenu {
 
     public GameMenu(JFrame frame) {

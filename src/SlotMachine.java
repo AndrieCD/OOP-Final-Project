@@ -12,11 +12,14 @@ public class SlotMachine extends Game {
     private final HashMap<String, Double> winningPatterns;
     private final Random random = new Random();
     private final String[] icons;
+    private HashMap<String, String> iconImages; // holds keys as image's label, and value as img path
+    private String[] result;
     private boolean isSpinning;
     private JLabel icon1, icon2, icon3;
     private JLabel moneyLabel;
-    private String[] result;
     private JPanel bottomPanel;
+    private JTextField betInput;
+    private String lastIcon;
 
     public SlotMachine(JFrame frame) {
         super(frame);
@@ -59,7 +62,7 @@ public class SlotMachine extends Game {
     // ---------DISPLAY METHOD------------//
     // icon label helper method
     private JLabel createIconLabel() {
-        JLabel label = new JLabel(icons[random.nextInt(icons.length)]);
+        JLabel label = new JLabel(updateIcons());
         label.setOpaque(true);
         label.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
         return label;
@@ -92,15 +95,42 @@ public class SlotMachine extends Game {
         iconPanel.add(icon2);
         iconPanel.add(icon3);
 
-        background.add(iconPanel, BorderLayout.CENTER);
+        buttonPanel.add(iconPanel, BorderLayout.SOUTH);
 
         addButton("SPIN", e -> spin());
         bet();
     }
 
+    private ImageIcon updateIcons() {
+        iconImages = new HashMap<>();
+        iconImages.put("Seven", "src/images/seven.png");
+        iconImages.put("Cherry", "src/images/cherry.png");
+        iconImages.put("Lemon", "src/images/lemon.png");
+        iconImages.put("Orange", "src/images/orange.png");
+        iconImages.put("Plum", "src/images/plum.png");
+        iconImages.put("Bar", "src/images/bar.png");
+        iconImages.put("Star", "src/images/star.png");
+
+        // get all our keys in an array to randomize
+        Object[] keys = iconImages.keySet().toArray();
+        String randomKey = (String) keys[new Random().nextInt(keys.length)];
+
+        lastIcon = randomKey;
+
+        // randomize imgIcon on key's value
+        String imagePath = iconImages.get(randomKey);
+        ImageIcon imgIcon = new ImageIcon(imagePath);
+        Image scaledImage = imgIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        imgIcon = new ImageIcon(scaledImage);
+
+        return imgIcon;
+    }
+
     // ---------SPIN METHOD------------//
     // ---------SPIN METHOD------------//
+
     private void spin() {
+        validateBet();
         if (this.bet == 0 || this.isSpinning == true)
             return;
 
@@ -119,7 +149,8 @@ public class SlotMachine extends Game {
         // timers that update each icons, lasting for 2, 4, and 6 seconds respectively
         timer1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                icon1.setText(icons[random.nextInt(icons.length)]); // random spin icon1
+                icon1.setIcon(updateIcons()); // random spin icon1
+                result[0] = lastIcon;
                 if (System.currentTimeMillis() - startTime >= spinDuration) {
                     timer1.stop(); // stop spinning after 2s
                 }
@@ -128,7 +159,8 @@ public class SlotMachine extends Game {
 
         timer2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                icon2.setText(icons[random.nextInt(icons.length)]); // random spin icon2
+                icon2.setIcon(updateIcons()); // random spin icon2
+                result[1] = lastIcon;
                 if (System.currentTimeMillis() - startTime >= spinDuration * 1.5) {
                     timer2.stop(); // stop spinning after 2s
                 }
@@ -137,7 +169,8 @@ public class SlotMachine extends Game {
 
         timer3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                icon3.setText(icons[random.nextInt(icons.length)]); // random spin icon3
+                icon3.setIcon(updateIcons()); // random spin icon3
+                result[2] = lastIcon;
                 if (System.currentTimeMillis() - startTime >= spinDuration * 2) {
                     timer3.stop(); // stop spinning after 2s
                     finalizeSpin(); // finalize our spin and store the results
@@ -153,10 +186,6 @@ public class SlotMachine extends Game {
 
     // finalize spin
     private void finalizeSpin() {
-        // set the result from the randomized spin
-        result[0] = icon1.getText();
-        result[1] = icon2.getText();
-        result[2] = icon3.getText();
 
         // apply multiplier
         this.multiplier = calculateMultiplier(result);
@@ -167,8 +196,7 @@ public class SlotMachine extends Game {
 
         Game.money += (this.bet * this.multiplier);
         this.bet = 0;
-        // refresh money label
-        moneyLabel.setText("Money: " + Game.money);
+        updateMoneyLabel();
 
         this.isSpinning = false;
     }
@@ -214,51 +242,51 @@ public class SlotMachine extends Game {
         bettingPanel.setOpaque(false); // Transparent background
 
         // Input field for the bet amount
-        JTextField betInput = new JTextField(10); // Single-line input
+        betInput = new JTextField(10); // Single-line input
         betInput.setFont(new Font("Trebuchet MS", Font.PLAIN, 16));
         betInput.setToolTipText("Enter your bet here");
-
-        // Confirm bet button
-        JButton confirmBetButton = new JButton("Confirm Bet");
-        confirmBetButton.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
-        confirmBetButton.setBackground(new Color(0, 128, 0)); // Green
-        confirmBetButton.setForeground(Color.WHITE);
 
         // Add components to the betting panel
         bettingPanel.add(new JLabel("Enter Bet:"));
         bettingPanel.add(betInput);
-        bettingPanel.add(confirmBetButton);
 
         // Add the betting panel to the top of the bottom panel
         bottomPanel.add(bettingPanel, BorderLayout.NORTH);
+    }
 
-        // Action listener for the confirm bet button
-        confirmBetButton.addActionListener(e -> {
-            if (isSpinning) {
-                JOptionPane.showMessageDialog(null, "You cannot bet while spinning!", "Error",
-                        JOptionPane.WARNING_MESSAGE);
-                return;
+    private void validateBet() {
+        if (isSpinning) {
+            JOptionPane.showMessageDialog(null, "You cannot bet while spinning!", "Error",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // Validate input
+            String input = betInput.getText().trim();
+            int validateBet = Integer.parseInt(input);
+
+            if (validateBet > Game.money) {
+                throw new IllegalArgumentException("Bet exceeds available money!");
+            } else if (validateBet <= 0) {
+                throw new IllegalArgumentException("Bet must be greater than zero!");
             }
 
-            try {
-                // Validate input
-                String input = betInput.getText().trim();
-                int validateBet = Integer.parseInt(input);
+            // Update bet and clear input
+            this.bet = validateBet;
+            Game.money -= this.bet;
+            updateMoneyLabel();
 
-                if (validateBet > Game.money) {
-                    throw new IllegalArgumentException("Bet exceeds available money!");
-                } else if (validateBet <= 0) {
-                    throw new IllegalArgumentException("Bet must be greater than zero!");
-                }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid input! Please enter a numeric value.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-                // Update bet and clear input
-                this.bet = validateBet;
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Invalid input! Please enter a numeric value.", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
+    private void updateMoneyLabel() {
+        // refresh money label
+        moneyLabel.setText("Money: " + Game.money);
     }
 }

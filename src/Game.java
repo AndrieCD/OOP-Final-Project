@@ -8,7 +8,7 @@ public abstract class Game extends JPanel implements BaseDisplay {
     protected JPanel topPanel;
     protected JPanel backButtPanel;
     protected JLabel background;
-    public static int money = 1000;
+    public static int money = 777;
     public int bet;
     public double multiplier;
 
@@ -25,7 +25,7 @@ public abstract class Game extends JPanel implements BaseDisplay {
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(75, 150, 150, 150));
         buttonPanel.setOpaque(false);
 
-        background.add(buttonPanel, BorderLayout.SOUTH);
+        background.add(buttonPanel, BorderLayout.CENTER);
 
         // BACK BUTTON
         backButtPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
