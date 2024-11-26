@@ -1,6 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -8,53 +6,63 @@ public abstract class Game extends JPanel implements BaseDisplay {
     protected static GameTimer timer;
     protected JFrame frame;
     protected JPanel buttonPanel;
-    protected JPanel timerPanel;
+    protected JPanel topPanel;
     protected JPanel backButtPanel;
-    int money;
-    int bet;
-    int multiplier;
+    protected JLabel backgroundImage;
+    public static int money = 1000;
+    public int bet;
+    public double multiplier;
 
     public Game(JFrame frame) {
         this.frame = frame;
         setLayout(new BorderLayout());
 
         // background!
-        JLabel backgroundImage = new JLabel(BaseDisplay.background);
+        backgroundImage = new JLabel(BaseDisplay.background);
         backgroundImage.setLayout(new BorderLayout());
 
-        // button panel
-        buttonPanel = new JPanel(new GridLayout(0, 1, 0, 10));
+        // buttons panel
+        buttonPanel = new JPanel();
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(75, 150, 150, 150));
         buttonPanel.setOpaque(false);
 
-        // add button panel to center of background
-        backgroundImage.add(buttonPanel, BorderLayout.CENTER);
+        backgroundImage.add(buttonPanel, BorderLayout.SOUTH);
 
-        // add background image to the main panel
-        add(backgroundImage, BorderLayout.CENTER);
-
+        /////////////////////////   /////////////////////////   /////////////////////////   
+        /////////////////////////   BACK BUTTON MISSING    /// BORDERLAYOUT ERROR???
+        /////////////////////////   /////////////////////////   /////////////////////////   
+        // BACK BUTTON
         backButtPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         backButtPanel.setOpaque(false);
-
         JButton backButton = new JButton("<");
         backButton.setPreferredSize(new Dimension(45, 45)); // Set button size
         backButton.addActionListener(e -> play());
-
         backButtPanel.add(backButton);
         backgroundImage.add(backButtPanel, BorderLayout.NORTH);
 
         // add gameTimer on bottom-left corner of the window
-        timerPanel = new JPanel(new BorderLayout());
-        timerPanel.setOpaque(false);
+        topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
         if (timer == null)
             timer = new GameTimer(frame);
-        timerPanel.add(timer);
-        backgroundImage.add(timerPanel, BorderLayout.SOUTH);
+        topPanel.add(timer);
+        backgroundImage.add(topPanel, BorderLayout.NORTH);
+
+        // add background image to the main panel
+        add(backgroundImage, BorderLayout.CENTER);
 
         // init game variables
-        this.money = 1000;
-        this.multiplier = -1;
+        this.multiplier = 0;
         this.bet = 0;
+    }
+
+    // SETTER FOR BALANCE OPTION.... LOAN -- > setMoney(getMoney() + loan);
+    public static void setMoney(int newVal) {
+        money = newVal;
+    }
+
+    public static int getMoney() {
+        return money;
     }
 
     // helper method ...
@@ -73,5 +81,5 @@ public abstract class Game extends JPanel implements BaseDisplay {
         frame.repaint();
     }
 
-    public abstract void bet();
+    protected abstract void bet();
 }
