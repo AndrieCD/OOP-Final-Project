@@ -24,6 +24,11 @@ public class SlotMachine extends Game {
     public SlotMachine(JFrame frame) {
         super(frame);
 
+        System.out.println(PlayerStorage.getTotalSpins());
+        System.out.println(PlayerStorage.getTotalEarnings());
+        System.out.println(PlayerStorage.getTotalLosses());
+        System.out.println(PlayerStorage.getMoney());
+
         // initalize the icons array
         icons = new String[] { "Seven", "Cherry", "Lemon", "Orange", "Plum", "Bar", "Star" };
 
@@ -73,7 +78,7 @@ public class SlotMachine extends Game {
         bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setOpaque(false);
 
-        moneyLabel = new JLabel("Money: " + getMoney());
+        moneyLabel = new JLabel("Money: " + PlayerStorage.getMoney());
         moneyLabel.setForeground(Color.WHITE);
         moneyLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -195,17 +200,17 @@ public class SlotMachine extends Game {
         System.out.println("Multiplier: " + this.multiplier);
 
         int winLoss = (int) (this.bet * this.multiplier);
-        setMoney(getMoney() + winLoss);
+        PlayerStorage.setMoney(PlayerStorage.getMoney() + winLoss);
         if (winLoss <= 0) {
-            setTotalLosses(getTotalLosses() + this.bet);
+            PlayerStorage.setTotalLosses(PlayerStorage.getTotalLosses() + this.bet);
         } else {
-            setTotalEarnings(getTotalEarnings() + winLoss);
+            PlayerStorage.setTotalEarnings(PlayerStorage.getTotalEarnings() + (winLoss - this.bet));
         }
         this.bet = 0;
         updateMoneyLabel();
 
         this.isSpinning = false;
-        setTotalSpins(getTotalSpins() + 1);
+        PlayerStorage.setTotalSpins(PlayerStorage.getTotalSpins() + 1);
     }
 
     private double calculateMultiplier(String[] result) {
@@ -273,7 +278,7 @@ public class SlotMachine extends Game {
             String input = betInput.getText().trim();
             int validateBet = Integer.parseInt(input);
 
-            if (validateBet > getMoney()) {
+            if (validateBet > PlayerStorage.getMoney()) {
                 throw new IllegalArgumentException("Bet exceeds available money!");
             } else if (validateBet <= 0) {
                 throw new IllegalArgumentException("Bet must be greater than zero!");
@@ -281,7 +286,7 @@ public class SlotMachine extends Game {
 
             // Update bet and clear input
             this.bet = validateBet;
-            setMoney(getMoney() - this.bet);
+            PlayerStorage.setMoney(PlayerStorage.getMoney() - this.bet);
             updateMoneyLabel();
 
         } catch (NumberFormatException ex) {
@@ -294,6 +299,6 @@ public class SlotMachine extends Game {
 
     private void updateMoneyLabel() {
         // refresh money label
-        moneyLabel.setText("Money: " + getMoney());
+        moneyLabel.setText("Money: " + PlayerStorage.getMoney());
     }
 }

@@ -5,17 +5,21 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class Main extends PlayerStorage implements BaseDisplay {
+public class Main implements BaseDisplay {
 
     // SAVE OUR PLAYER'S DATA
     private static void saveData() {
+        // System.out.println(PlayerStorage.getTotalSpins());
+        // System.out.println(PlayerStorage.getTotalEarnings());
+        // System.out.println(PlayerStorage.getTotalLosses());
+        // System.out.println(PlayerStorage.getMoney());
         try {
             FileWriter plrData = new FileWriter("playerData.txt");
 
-            plrData.write(getTotalSpins() + "\n");
-            plrData.write(getTotalEarnings() + "\n");
-            plrData.write(getTotalLosses() + "\n");
-            plrData.write(getMoney() + "\n");
+            plrData.write(PlayerStorage.getTotalSpins() + "\n");
+            plrData.write(PlayerStorage.getTotalEarnings() + "\n");
+            plrData.write(PlayerStorage.getTotalLosses() + "\n");
+            plrData.write(PlayerStorage.getMoney() + "\n");
 
             plrData.close();
             System.out.println("Player data saved successfully!");
@@ -33,26 +37,26 @@ public class Main extends PlayerStorage implements BaseDisplay {
             while ((line = plrData.readLine()) != null) {
                 switch (lineNumber) {
                     case 0:
-                        setTotalSpins(Integer.parseInt(line));
+                        PlayerStorage.setTotalSpins(Integer.parseInt(line));
                         break;
                     case 1:
-                        setTotalEarnings(Integer.parseInt(line));
+                        PlayerStorage.setTotalEarnings(Integer.parseInt(line));
                         break;
                     case 2:
-                        setTotalLosses(Integer.parseInt(line));
+                        PlayerStorage.setTotalLosses(Integer.parseInt(line));
                         break;
                     case 3:
-                        setMoney(Integer.parseInt(line));
+                        PlayerStorage.setMoney(Integer.parseInt(line));
                         break;
                 }
                 lineNumber++;
             }
             plrData.close();
 
-            System.out.println(getTotalSpins());
-            System.out.println(getTotalEarnings());
-            System.out.println(getTotalLosses());
-            System.out.println(getMoney());
+            System.out.println(PlayerStorage.getTotalSpins());
+            System.out.println(PlayerStorage.getTotalEarnings());
+            System.out.println(PlayerStorage.getTotalLosses());
+            System.out.println(PlayerStorage.getMoney());
         } catch (IOException e) {
             System.out.println("An error occurred while loading player data.");
         }

@@ -1,25 +1,7 @@
-public interface PlayerData {
-    int getTotalSpins();
-
-    int getTotalEarnings();
-
-    int getTotalLosses();
-
-    int getMoney();
-
-    void setTotalSpins(int totalSpins);
-
-    void setTotalEarnings(int totalEarnings);
-
-    void setTotalLosses(int totalLosses);
-
-    void setMoney(int money);
-}
-
-class PlayerStorage {
-    private static int totalSpins;
-    private static int totalEarnings;
-    private static int totalLosses;
+public class PlayerStorage {
+    private static int totalSpins = 0;
+    private static int totalEarnings = 0;
+    private static int totalLosses = 0;
     private static int money = 777;
 
     public static int getTotalSpins() {
