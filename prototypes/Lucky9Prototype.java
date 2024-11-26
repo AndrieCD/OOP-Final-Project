@@ -74,12 +74,28 @@ public class Lucky9Prototype{
 
         // display initial hands
         System.out.println("Player's Hand: " + playerHand);
-        System.out.println("Dealer's Hand: " + dealerHand);
+        System.out.println("Dealer's Hand: " + dealerHand.get(0) + ", ???");
 
         System.out.println("Player: " + playerScore);
-        System.out.println("Dealer: " + dealerScore);
+        System.out.println("Dealer: ???");
         
-        //if dealer's hand has a score less than or equal to 4
+        //if Player gets a 9 on the first hand, its a natural 9 and wins automatically. exit immediately
+        // ask player if he wants to add another card to his hand
+       
+         if (playerScore == 9){
+            System.out.println("Player Natural 9! PLAYER WINS!");
+            System.exit(0);
+         }
+
+        System.out.print("Do you want to draw another card? (Yes/No): ");
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("yes")) {
+            playerHand.add(deck.dealCard());
+            playerScore = calculateScore(playerHand);
+            System.out.println("Player's New Hand: " + playerHand);
+            System.out.println("Dealer's Hand: " + dealerHand);
+        }
+         //if dealer's hand has a score less than or equal to 4
         //they draw another card
         if (dealerScore <= 4){
             System.out.println("Dealer score is less than or equal to 4!\nThey draw another card!");
@@ -97,28 +113,6 @@ public class Lucky9Prototype{
             System.out.println("Dealer: " + dealerScore);
         }
         
-
-        //if Dealer or Player gets a 9 on the first hand, its a natural 9 and wins automatically. exit immediately
-        // ask player if he wants to add another card to his hand
-        if (playerScore == 9 && dealerScore == 9){
-            System.out.println("It's a tie!");
-            System.exit(0);
-        } else if (playerScore == 9){
-            System.out.println("Player Natural 9! PLAYER WINS!");
-            System.exit(0);
-        } else if (dealerScore == 9){
-            System.out.println("Dealer Natural 9! DEALER WINS!");
-            System.exit(0);
-        }
-        System.out.print("Do you want to draw another card? (Yes/No): ");
-        String choice = scanner.nextLine();
-        if (choice.equalsIgnoreCase("yes")) {
-            playerHand.add(deck.dealCard());
-            playerScore = calculateScore(playerHand);
-            System.out.println("Player's New Hand: " + playerHand);
-            System.out.println("Dealer's Hand: " + dealerHand);
-        }
-
         // calculate score 
         System.out.println("\nFinal Scores:");
         System.out.println("Player: " + playerScore);
@@ -140,6 +134,7 @@ public class Lucky9Prototype{
         scanner.close();
     }
     //this is to calculate the dealer and player score
+    
     private static int calculateScore(List<Card> hand) {
         int total = 0;
         for (Card card : hand) {
