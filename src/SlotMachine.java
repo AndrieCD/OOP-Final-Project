@@ -73,7 +73,7 @@ public class SlotMachine extends Game {
         bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setOpaque(false);
 
-        moneyLabel = new JLabel("Money: " + Game.money);
+        moneyLabel = new JLabel("Money: " + getMoney());
         moneyLabel.setForeground(Color.WHITE);
         moneyLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -194,11 +194,18 @@ public class SlotMachine extends Game {
         System.out.println("Result: " + result[0] + " " + result[1] + " " + result[2]);
         System.out.println("Multiplier: " + this.multiplier);
 
-        Game.money += (this.bet * this.multiplier);
+        int winLoss = (int) (this.bet * this.multiplier);
+        setMoney(getMoney() + winLoss);
+        if (winLoss <= 0) {
+            setTotalLosses(getTotalLosses() + this.bet);
+        } else {
+            setTotalEarnings(getTotalEarnings() + winLoss);
+        }
         this.bet = 0;
         updateMoneyLabel();
 
         this.isSpinning = false;
+        setTotalSpins(getTotalSpins() + 1);
     }
 
     private double calculateMultiplier(String[] result) {
@@ -266,7 +273,7 @@ public class SlotMachine extends Game {
             String input = betInput.getText().trim();
             int validateBet = Integer.parseInt(input);
 
-            if (validateBet > Game.money) {
+            if (validateBet > getMoney()) {
                 throw new IllegalArgumentException("Bet exceeds available money!");
             } else if (validateBet <= 0) {
                 throw new IllegalArgumentException("Bet must be greater than zero!");
@@ -274,7 +281,7 @@ public class SlotMachine extends Game {
 
             // Update bet and clear input
             this.bet = validateBet;
-            Game.money -= this.bet;
+            setMoney(getMoney() - this.bet);
             updateMoneyLabel();
 
         } catch (NumberFormatException ex) {
@@ -287,6 +294,6 @@ public class SlotMachine extends Game {
 
     private void updateMoneyLabel() {
         // refresh money label
-        moneyLabel.setText("Money: " + Game.money);
+        moneyLabel.setText("Money: " + getMoney());
     }
 }

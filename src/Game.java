@@ -2,15 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public abstract class Game extends JPanel implements BaseDisplay {
+public abstract class Game extends JPanel implements BaseDisplay, PlayerData {
     protected JFrame frame;
     protected JPanel buttonPanel;
     protected JPanel topPanel;
     protected JPanel backButtPanel;
     protected JLabel background;
-    public static int money = 777;
-    public int bet;
-    public double multiplier;
+    protected int bet;
+    protected double multiplier;
 
     public Game(JFrame frame) {
         this.frame = frame;
@@ -42,15 +41,9 @@ public abstract class Game extends JPanel implements BaseDisplay {
         // init game variables
         this.multiplier = 0;
         this.bet = 0;
-    }
-
-    // SETTER FOR BALANCE OPTION.... LOAN -- > setMoney(getMoney() + loan);
-    public static void setMoney(int newVal) {
-        money = newVal;
-    }
-
-    public static int getMoney() {
-        return money;
+        setTotalSpins(0);
+        setTotalEarnings(0);
+        setTotalLosses(0);
     }
 
     // helper method ...
@@ -70,4 +63,41 @@ public abstract class Game extends JPanel implements BaseDisplay {
     }
 
     protected abstract void bet();
+
+    // overrides from PlayerData -> PlayerStorage
+    // Getters
+
+    public int getTotalSpins() {
+        return PlayerStorage.getTotalSpins();
+    }
+
+    public int getTotalEarnings() {
+        return PlayerStorage.getTotalEarnings();
+    }
+
+    public int getTotalLosses() {
+        return PlayerStorage.getTotalLosses();
+    }
+
+    public int getMoney() {
+        return PlayerStorage.getMoney();
+    }
+
+    // Setters
+
+    public void setTotalSpins(int totalSpins) {
+        PlayerStorage.setTotalSpins(totalSpins);
+    }
+
+    public void setTotalEarnings(int totalEarnings) {
+        PlayerStorage.setTotalEarnings(totalEarnings);
+    }
+
+    public void setTotalLosses(int totalLosses) {
+        PlayerStorage.setTotalLosses(totalLosses);
+    }
+
+    public void setMoney(int money) {
+        PlayerStorage.setMoney(money);
+    }
 }
