@@ -24,23 +24,23 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
     // helper methods ...
     protected JButton addButton(ImageIcon icon, ActionListener listener) {
         JButton button = new JButton(); // No text in the constructor
-    
+
         // Set the image icon for the button
         button.setIcon(icon);
-    
+
         // Remove focus outline on the button
         button.setFocusable(false);
-    
+
         // Remove default background and border for a cleaner look
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
-    
+
         // Add action listener
         button.addActionListener(listener);
-    
+
         // Add the button to the panel
         buttonPanel.add(button);
-    
+
         return button;
     }
 
@@ -59,12 +59,12 @@ class MainMenu extends BaseMenu {
 
     public MainMenu(JFrame frame) {
         super(frame);
-    
+
         // Create ImageIcon objects for each button
         ImageIcon startIcon = new ImageIcon("src/images/buttons/start_button.png");
         ImageIcon scoresIcon = new ImageIcon("src/images/buttons/scores_button.png");
         ImageIcon exitIcon = new ImageIcon("src/images/buttons/exit_button.png");
-    
+
         // Add buttons with icons
         addButton(startIcon, e -> navigateTo(new GameMenu(frame)));
         addButton(scoresIcon, e -> JOptionPane.showMessageDialog(frame, "scorerere"));
@@ -85,18 +85,12 @@ class GameMenu extends BaseMenu {
         ImageIcon lucky9Icon = new ImageIcon("src/images/buttons/lucky9_button.png");
         ImageIcon balanceIcon = new ImageIcon("src/images/buttons/balance_button.png");
         ImageIcon backIcon = new ImageIcon("src/images/buttons/back_button.png");
-    
+
         // Add buttons with icons
         addButton(slotIcon, e -> navigateTo(new SlotMachine(frame)));
         addButton(lucky9Icon, e -> JOptionPane.showMessageDialog(frame, "luckyy"));
         addButton(balanceIcon, e -> navigateTo(new Balance(frame)));
         addButton(backIcon, e -> navigateTo(new MainMenu(frame)));
-
-        // add buttons ([STRING_LABEL] , [ACTION])
-        addButton("SLOT MACHINE", e -> navigateTo(new SlotMachine(frame)));
-        addButton("LUCKY9", e -> navigateTo(new Lucky9(frame)));
-        addButton("BALANCE", e -> JOptionPane.showMessageDialog(frame, "balbalbal"));
-        addButton("BACK", e -> navigateTo(new MainMenu(frame)));
 
     }
 }
