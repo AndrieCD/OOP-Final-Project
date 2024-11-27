@@ -33,7 +33,7 @@ public abstract class Game extends JPanel implements BaseDisplay {
         // Create the button
         JButton backButton = new JButton("BACK");
         backButton.setPreferredSize(new Dimension(90, 45)); // Set button size
-        backButton.setBackground(Color.RED);
+        backButton.setBackground(new Color(56, 43, 50));
         backButton.setForeground(Color.WHITE);
         backButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));  // Button border
         backButton.setFont(new Font("Trebuchet MS", Font.BOLD, 16));

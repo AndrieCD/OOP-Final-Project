@@ -102,7 +102,7 @@ public class SlotMachine extends Game {
         addButton("SPIN", e -> spin());
         JButton spinButton = (JButton) getButtonFromPanel(buttonPanel, "SPIN");
         if (spinButton != null) {
-            spinButton.setBackground(Color.RED);  // Set background color to red
+            spinButton.setBackground(new Color(235, 58, 48));
             spinButton.setForeground(Color.WHITE); // Set text color to white
             spinButton.setFont(new Font("Trebuchet MS", Font.BOLD, 18));  // Set font style and size
         }
