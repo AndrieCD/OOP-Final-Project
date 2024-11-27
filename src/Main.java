@@ -1,7 +1,7 @@
 // MAIN.JAVA
 
-import javax.swing.*; // provides us with the classes and fields for GUI creation and management
-import java.awt.event.*; // allows us to detect and manage events
+import java.awt.event.*; // provides us with the classes and fields for GUI creation and management
+import javax.swing.*; // allows us to detect and manage events
 
 public class Main implements BaseDisplay {
 
@@ -29,6 +29,5 @@ public class Main implements BaseDisplay {
 
             }
         });
-
     }
 }

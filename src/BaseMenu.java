@@ -70,7 +70,16 @@ class GameMenu extends BaseMenu {
         ImageIcon backIcon = new ImageIcon("src/images/buttons/back_button.png");
     
         // navigating towards the games or checking balance
-        addButton(slotIcon, e -> navigateTo(new SlotMachine(frame)));
+        addButton(slotIcon, e -> {
+            // Check if the player is bankrupt before navigating
+            if (PlayerStorage.getMoney() <= 0) {
+                Balance balance = new Balance(frame);
+                balance.triggerBankruptcyCheck(); // Show error and navigate to Game Over
+            } else {
+                navigateTo(new SlotMachine(frame)); // Proceed to Slot Machine
+            }
+        });
+        
         addButton(lucky9Icon, e -> JOptionPane.showMessageDialog(frame, "luckyy"));
         addButton(balanceIcon, e -> navigateTo(new Balance(frame)));
         addButton(backIcon, e -> navigateTo(new MainMenu(frame)));
