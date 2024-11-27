@@ -106,9 +106,15 @@ class Balance extends BaseMenu {
     }
 
     // Bankruptcy check
+
+    public void triggerBankruptcyCheck() {
+        checkBankruptcy(); // Calls the private method internally
+    }
+
     private void checkBankruptcy() {
         if (PlayerStorage.getMoney() <= 0 && globalLoanPool <= 0) {
             JOptionPane.showMessageDialog(frame, "You are bankrupt! No money and no loans available.", "Bankruptcy", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
 }

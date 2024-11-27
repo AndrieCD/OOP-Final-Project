@@ -54,6 +54,9 @@ public abstract class Game extends JPanel implements BaseDisplay {
         // init game variables
         this.multiplier = 0;
         this.bet = 0;
+
+        Balance balance = new Balance(frame);
+        balance.triggerBankruptcyCheck();
     }
 
     // helper method ...
