@@ -29,8 +29,8 @@ public abstract class Game extends JPanel implements BaseDisplay {
         // BACK BUTTON
         backButtPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         backButtPanel.setOpaque(false);
-        JButton backButton = new JButton("<");
-        backButton.setPreferredSize(new Dimension(45, 45)); // Set button size
+        JButton backButton = new JButton("BACK");
+        backButton.setPreferredSize(new Dimension(90, 45)); // Set button size
         backButton.addActionListener(e -> play());
         backButtPanel.add(backButton);
         background.add(backButtPanel, BorderLayout.NORTH);

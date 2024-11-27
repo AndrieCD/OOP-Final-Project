@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 // -------------------------------------------------------------------------
 public class SlotMachine extends Game {
     private final HashMap<String, Double> winningPatterns;
-    private final Random random = new Random();
     private final String[] icons;
     private HashMap<String, String> iconImages; // holds keys as image's label, and value as img path
     private String[] result;
@@ -21,6 +20,7 @@ public class SlotMachine extends Game {
     private JTextField betInput;
     private String lastIcon;
 
+    // CONSTRUCTOR //
     public SlotMachine(JFrame frame) {
         super(frame);
 
@@ -45,6 +45,7 @@ public class SlotMachine extends Game {
         initializeDisplay();
     }
 
+    // INITIALIZE THE PATTERN HASHMAP //
     private void initializePatterns() {
         // PAIR IS < PATTERN , MULTIPLIER >
         winningPatterns.put("Seven Seven Seven", 10.0); // triple 7 pattern is 10x multiplier
@@ -73,6 +74,7 @@ public class SlotMachine extends Game {
         return label;
     }
 
+    // // INITIALIZE DISPLAY //
     private void initializeDisplay() {
         // create a label to display the player's money, set properties
         bottomPanel = new JPanel(new BorderLayout());
@@ -106,6 +108,7 @@ public class SlotMachine extends Game {
         bet();
     }
 
+    // HELPER METHOD TO UPDATE THE ICONS //
     private ImageIcon updateIcons() {
         iconImages = new HashMap<>();
         iconImages.put("Seven", "src/images/seven.png");
@@ -133,7 +136,6 @@ public class SlotMachine extends Game {
 
     // ---------SPIN METHOD------------//
     // ---------SPIN METHOD------------//
-
     private void spin() {
         validateBet();
         if (this.bet == 0 || this.isSpinning == true)
@@ -213,6 +215,7 @@ public class SlotMachine extends Game {
         PlayerStorage.setTotalSpins(PlayerStorage.getTotalSpins() + 1);
     }
 
+    // CALCULATES THE WIN/LOSS BASED ON MULTIPLIER
     private double calculateMultiplier(String[] result) {
         String pattern = String.join(" ", result);
 
@@ -266,6 +269,7 @@ public class SlotMachine extends Game {
         bottomPanel.add(bettingPanel, BorderLayout.NORTH);
     }
 
+    // VALIDATES THE BET //
     private void validateBet() {
         if (isSpinning) {
             JOptionPane.showMessageDialog(null, "You cannot bet while spinning!", "Error",
@@ -297,6 +301,7 @@ public class SlotMachine extends Game {
         }
     }
 
+    // HELPER METHOD TO UPDATE THE MONEY LABEL
     private void updateMoneyLabel() {
         // refresh money label
         moneyLabel.setText("Money: " + PlayerStorage.getMoney());
