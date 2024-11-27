@@ -37,7 +37,7 @@ public abstract class Game extends JPanel implements BaseDisplay {
         backButton.setForeground(Color.WHITE);
         backButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));  // Button border
         backButton.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
-        backButtPanel.setBorder(BorderFactory.createEmptyBorder(3, 28, 0, 0));  // Add padding to the panel
+        backButtPanel.setBorder(BorderFactory.createEmptyBorder(35, 28, 0, 0));
 
         // Add action listener to the button
         backButton.addActionListener(e -> play());

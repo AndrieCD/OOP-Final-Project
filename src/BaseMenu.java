@@ -92,11 +92,12 @@ class GameMenu extends BaseMenu {
         addButton(balanceIcon, e -> navigateTo(new Balance(frame)));
         addButton(backIcon, e -> navigateTo(new MainMenu(frame)));
 
+        /* (nageerror eto di q alm kung need pa ba siiya? TT comment q muna)
         // add buttons ([STRING_LABEL] , [ACTION])
         addButton("SLOT MACHINE", e -> navigateTo(new SlotMachine(frame)));
         addButton("LUCKY9", e -> navigateTo(new Lucky9(frame)));
         addButton("BALANCE", e -> JOptionPane.showMessageDialog(frame, "balbalbal"));
-        addButton("BACK", e -> navigateTo(new MainMenu(frame)));
+        addButton("BACK", e -> navigateTo(new MainMenu(frame))); */
 
     }
 }
