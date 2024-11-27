@@ -8,6 +8,7 @@ public class PlayerStorage {
     private static int totalEarnings = 0;
     private static int totalLosses = 0;
     private static int money = 777;
+    private static int loanAmount = 0; // Added loan amount tracking
 
     public static int getTotalSpins() {
         return PlayerStorage.totalSpins;
@@ -41,6 +42,14 @@ public class PlayerStorage {
         PlayerStorage.money = newMoney;
     }
 
+    public static int getLoanAmount() {
+        return PlayerStorage.loanAmount;
+    }
+
+    public static void setLoanAmount(int newLoan) {
+        PlayerStorage.loanAmount = newLoan;
+    }
+
     // SAVE OUR PLAYER'S DATA
     public static void saveData() {
         try {
@@ -50,6 +59,7 @@ public class PlayerStorage {
             plrData.write(PlayerStorage.getTotalEarnings() + "\n");
             plrData.write(PlayerStorage.getTotalLosses() + "\n");
             plrData.write(PlayerStorage.getMoney() + "\n");
+            plrData.write(PlayerStorage.getLoanAmount() + "\n"); // Added loan amount to save
 
             plrData.close();
             System.out.println("Player data saved successfully!");
@@ -79,6 +89,9 @@ public class PlayerStorage {
                     case 3:
                         PlayerStorage.setMoney(Integer.parseInt(line));
                         break;
+                    case 4:
+                        PlayerStorage.setLoanAmount(Integer.parseInt(line)); // Added loan amount to load
+                        break;
                 }
                 lineNumber++;
             }
@@ -94,5 +107,6 @@ public class PlayerStorage {
         System.out.println(getTotalEarnings());
         System.out.println(getTotalLosses());
         System.out.println(getMoney());
+        System.out.println(getLoanAmount()); // Print loan amount
     }
 }
