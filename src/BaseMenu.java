@@ -79,8 +79,9 @@ class GameMenu extends BaseMenu {
                 navigateTo(new SlotMachine(frame)); // Proceed to Slot Machine
             }
         });
+        
+        
         addButton(lucky9Icon, e -> navigateTo(new Lucky9(frame)));
-        //addButton(lucky9Icon, e -> JOptionPane.showMessageDialog(frame, "luckyy"));
         addButton(balanceIcon, e -> navigateTo(new Balance(frame)));
         addButton(backIcon, e -> navigateTo(new MainMenu(frame)));
     }
