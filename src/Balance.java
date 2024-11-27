@@ -1,20 +1,18 @@
-
-
 /////////////////////
-/// 
-/// 
-/// 
-/// 
-/// 
-/// 
+///
+///
+///
+///
+///
+///
 /// 
 //drafting
 //needs improvement:
-    //saving money thingy
-    //bankcruptutyis NOTIFICATION
-    //D KO PA MAEXTEND TO PLAYER DATA, I NEED THE FORMATING WITH JLABEL BUTTONS
-    //current balance not set yet, d rin masyadong connected sa playerdata/playerstorage
-    //when exited, di nagrerestart ung game
+// saving money thingy
+// bankruptcy notification
+// D KO PA MAEXTEND TO PLAYER DATA, I NEED THE FORMATTING WITH JLABEL BUTTONS
+// current balance not set yet, d rin masyadong connected sa playerdata/playerstorage
+// when exited, di nagrerestart ung game
 
 import java.awt.*;
 import javax.swing.*;
@@ -31,37 +29,40 @@ class Balance extends BaseMenu {
     public Balance(JFrame frame) {
         super(frame);
 
-        loanAmount = 0; 
+        loanAmount = 0;
 
-        buttonPanel.setLayout(new GridLayout(4, 1, 10, 10)); // Tighter spacing
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50)); 
+        // Set layout to a 2x2 grid
+        buttonPanel.setLayout(new GridLayout(2, 2, 10, 10)); // 2 rows, 2 columns, 10px gaps
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(290, 150, 195, 150)); // Padding around grid
 
-        // button label balance
+        // Label for current balance
         balanceLabel = new JLabel("Current Balance: " + PlayerStorage.getMoney() + " coins");
         balanceLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
         balanceLabel.setForeground(Color.WHITE);
         balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
         buttonPanel.add(balanceLabel);
 
-        //button label balance
+        // Label for current loan
         loanLabel = new JLabel("Current Loan: " + loanAmount + " coins");
         loanLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
         loanLabel.setForeground(Color.WHITE);
         loanLabel.setHorizontalAlignment(SwingConstants.CENTER);
         buttonPanel.add(loanLabel);
 
-        //loaning
+        // Loan button
         ImageIcon loanIcon = new ImageIcon("src/images/buttons/loan_button.png");
         loanButton = addButton(loanIcon, e -> promptLoanInput());
+        buttonPanel.add(loanButton);
 
-        //back
+        // Back button
         ImageIcon backIcon = new ImageIcon("src/images/buttons/back_button.png");
         backButton = addButton(backIcon, e -> navigateTo(new GameMenu(frame)));
+        buttonPanel.add(backButton);
 
         updateUIComponents();
     }
 
-    //inputing how much the user wanna loan
+    // Inputting how much the user wants to loan
     private void promptLoanInput() {
         if (globalLoanPool <= 0) {
             JOptionPane.showMessageDialog(frame, "The loan pool is empty. No more loans can be taken.", "Loan Unavailable", JOptionPane.WARNING_MESSAGE);
@@ -85,7 +86,7 @@ class Balance extends BaseMenu {
         }
     }
 
-    //umpatitng
+    // Updating loan information
     private void loanMoney(int amount) {
         loanAmount += amount;
         globalLoanPool -= amount;
@@ -97,17 +98,17 @@ class Balance extends BaseMenu {
         checkBankruptcy();
     }
 
-    //ito d ko pa magawa wait, it doesnt notif yet,,,
+    // Updating balance and loan labels
     private void updateUIComponents() {
         balanceLabel.setText("Current Balance: " + PlayerStorage.getMoney() + " coins");
         loanLabel.setText("Current Loan: " + loanAmount + " coins");
         loanButton.setEnabled(globalLoanPool > 0);
     }
 
+    // Bankruptcy check
     private void checkBankruptcy() {
         if (PlayerStorage.getMoney() <= 0 && globalLoanPool <= 0) {
             JOptionPane.showMessageDialog(frame, "You are bankrupt! No money and no loans available.", "Bankruptcy", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 }
