@@ -78,16 +78,12 @@ public class SlotMachine extends Game {
         bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setOpaque(false);
 
-        moneyLabel = new JLabel("Money: " + PlayerStorage.getMoney());
-        moneyLabel.setForeground(Color.WHITE);
-        moneyLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        bottomPanel.add(moneyLabel, BorderLayout.SOUTH);
+        
         background.add(bottomPanel, BorderLayout.SOUTH);
 
         // create the panel for the slot machine's icons
         JPanel iconPanel = new JPanel();
-        iconPanel.setBorder(BorderFactory.createEmptyBorder(150, 95, 0, 75));
+        iconPanel.setBorder(BorderFactory.createEmptyBorder(150, 140, 0, 150));
         iconPanel.setOpaque(false);
 
         // create the labels using the helper method
@@ -106,8 +102,8 @@ public class SlotMachine extends Game {
         addButton("SPIN", e -> spin());
         JButton spinButton = (JButton) getButtonFromPanel(buttonPanel, "SPIN");
         if (spinButton != null) {
-            spinButton.setBackground(Color.BLACK);  // Set background color to blue
-            spinButton.setForeground(Color.YELLOW); // Set text color to white
+            spinButton.setBackground(Color.RED);  // Set background color to red
+            spinButton.setForeground(Color.WHITE); // Set text color to white
             spinButton.setFont(new Font("Trebuchet MS", Font.BOLD, 18));  // Set font style and size
         }
 
@@ -272,28 +268,47 @@ public class SlotMachine extends Game {
     // ---------BET METHOD------------//
     protected void bet() {
         // Create a panel for the betting GUI
-        JPanel bettingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 80));
+        JPanel bettingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         bettingPanel.setOpaque(false); // Transparent background
     
+        // Set a bottom padding using an empty border (if needed)
+        bettingPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        
         // Input field for the bet amount
         betInput = new JTextField(9); // Single-line input
         betInput.setFont(new Font("Trebuchet MS", Font.PLAIN, 16));
         betInput.setToolTipText("Enter your bet here");
         betInput.setForeground(Color.BLACK);
-    
+        
         // Label for bet input
         JLabel betLabel = new JLabel("Enter Bet: ");
         betLabel.setForeground(Color.WHITE);
         betLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
     
-        // Add components to the betting panel
-        bettingPanel.add(betLabel); // Add label to the panel
-        bettingPanel.add(betInput); // Add input field to the panel
+        // Add the label and text field to the betting panel
+        bettingPanel.add(betLabel);
+        bettingPanel.add(betInput);
     
-        // Add the betting panel to the top of the bottom panel
-        bottomPanel.add(bettingPanel, BorderLayout.NORTH);
+        // MONEy Label
+        moneyLabel = new JLabel("Money: " + PlayerStorage.getMoney());
+        moneyLabel.setForeground(Color.WHITE);
+        moneyLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the text horizontally
+        moneyLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the money label
+        moneyLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 140, 0));
+    
+        // Create a new JPanel to center the money label
+        JPanel moneyPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));  // FlowLayout to center content
+        moneyPanel.setOpaque(false);  // Transparent background
+        moneyPanel.add(moneyLabel);  // Add the money label to the centered panel
+    
+        // Set the layout of bottomPanel to BoxLayout to stack components vertically
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
+        bottomPanel.setOpaque(false);
+    
+        // Add the betting panel and money panel to the bottom panel
+        bottomPanel.add(bettingPanel);  // Add the betting input panel first
+        bottomPanel.add(moneyPanel);    // Add the centered money label below it
     }
-    
 
     // VALIDATES THE BET //
     private void validateBet() {

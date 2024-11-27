@@ -1,6 +1,6 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public abstract class Game extends JPanel implements BaseDisplay {
     protected JFrame frame;
@@ -27,12 +27,25 @@ public abstract class Game extends JPanel implements BaseDisplay {
         background.add(buttonPanel, BorderLayout.CENTER);
 
         // BACK BUTTON
-        backButtPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        backButtPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));  // Keep FlowLayout, but remove unnecessary padding
         backButtPanel.setOpaque(false);
+
+        // Create the button
         JButton backButton = new JButton("BACK");
         backButton.setPreferredSize(new Dimension(90, 45)); // Set button size
+        backButton.setBackground(Color.RED);
+        backButton.setForeground(Color.WHITE);
+        backButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));  // Button border
+        backButton.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
+        backButtPanel.setBorder(BorderFactory.createEmptyBorder(3, 28, 0, 0));  // Add padding to the panel
+
+        // Add action listener to the button
         backButton.addActionListener(e -> play());
+
+        // Add button to the panel
         backButtPanel.add(backButton);
+
+        // Add panel to the background container (assuming `background` is the parent container)
         background.add(backButtPanel, BorderLayout.NORTH);
 
         // add background image to the main panel
