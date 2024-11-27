@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.util.HashMap;
 import java.util.Random;
 import java.awt.*;
@@ -85,7 +87,7 @@ public class SlotMachine extends Game {
 
         // create the panel for the slot machine's icons
         JPanel iconPanel = new JPanel();
-        iconPanel.setBorder(BorderFactory.createEmptyBorder(200, 75, 0, 75));
+        iconPanel.setBorder(BorderFactory.createEmptyBorder(150, 95, 0, 75));
         iconPanel.setOpaque(false);
 
         // create the labels using the helper method
@@ -100,9 +102,30 @@ public class SlotMachine extends Game {
 
         buttonPanel.add(iconPanel, BorderLayout.SOUTH);
 
+        // SPIN BUTTON
         addButton("SPIN", e -> spin());
+        JButton spinButton = (JButton) getButtonFromPanel(buttonPanel, "SPIN");
+        if (spinButton != null) {
+            spinButton.setBackground(Color.BLACK);  // Set background color to blue
+            spinButton.setForeground(Color.YELLOW); // Set text color to white
+            spinButton.setFont(new Font("Trebuchet MS", Font.BOLD, 18));  // Set font style and size
+        }
+
         bet();
     }
+
+    // helper method to customize button
+    private JButton getButtonFromPanel(JPanel panel, String buttonText) {
+        for (Component comp : panel.getComponents()) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                if (button.getText().equals(buttonText)) {
+                    return button;  // Return the button if its text matches "SPIN"
+                }
+            }
+        }
+        return null;  // Return null if button is not found
+    }    
 
     // HELPER METHOD TO UPDATE THE ICONS //
     private ImageIcon updateIcons() {
@@ -249,21 +272,28 @@ public class SlotMachine extends Game {
     // ---------BET METHOD------------//
     protected void bet() {
         // Create a panel for the betting GUI
-        JPanel bettingPanel = new JPanel(new FlowLayout());
+        JPanel bettingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 80));
         bettingPanel.setOpaque(false); // Transparent background
-
+    
         // Input field for the bet amount
-        betInput = new JTextField(10); // Single-line input
+        betInput = new JTextField(9); // Single-line input
         betInput.setFont(new Font("Trebuchet MS", Font.PLAIN, 16));
         betInput.setToolTipText("Enter your bet here");
-
+        betInput.setForeground(Color.BLACK);
+    
+        // Label for bet input
+        JLabel betLabel = new JLabel("Enter Bet: ");
+        betLabel.setForeground(Color.WHITE);
+        betLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
+    
         // Add components to the betting panel
-        bettingPanel.add(new JLabel("Enter Bet:"));
-        bettingPanel.add(betInput);
-
+        bettingPanel.add(betLabel); // Add label to the panel
+        bettingPanel.add(betInput); // Add input field to the panel
+    
         // Add the betting panel to the top of the bottom panel
         bottomPanel.add(bettingPanel, BorderLayout.NORTH);
     }
+    
 
     // VALIDATES THE BET //
     private void validateBet() {
