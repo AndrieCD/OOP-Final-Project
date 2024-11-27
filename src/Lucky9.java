@@ -231,6 +231,44 @@ public class Lucky9 extends Game
             handPanel.repaint();
         }
 
+        //  INITIALIZE DISPLAY //   
+        private void initalizeDisplay()
+        {
+            // create a label to display the player's money, set properties
+            bottomPanel = new JPanel(new BorderLayout());
+            bottomPanel.setOpaque(false);
+
+            moneyLabel = new JLabel("Money: " + PlayerStorage.getMoney());
+            moneyLabel.setForeground(Color.WHITE);
+            moneyLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+            bottomPanel.add(moneyLabel, BorderLayout.SOUTH);
+            background.add(bottomPanel, BorderLayout.SOUTH);
+
+            //BET BUTTON
+            addButton("BET", e -> bet());
+            JButton betButton = (JButton) getButtonFromPanel(buttonPanel, "BET");
+            if (betButton != null)
+            {
+                betButton.setBackground(Color.BLACK);
+                betButton.setForeground(Color.YELLOW);
+                betButton.setFont(new Font("Trebuchet MS", Font.BOLD, 18));
+            }
+
+            startGame();
+        }
+
+        private JButton getButtonFromPanel(JPanel panel, String buttonText) {
+            for (Component comp : panel.getComponents()) {
+                if (comp instanceof JButton) {
+                    JButton button = (JButton) comp;
+                    if (button.getText().equals(buttonText)) {
+                        return button;  // Return the button if its text matches "SPIN"
+                    }
+                }
+            }
+            return null;  // Return null if button is not found
+        }    
 
 
 }
