@@ -13,8 +13,8 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
         JLabel backgroundImage = new JLabel(BaseDisplay.background);
         backgroundImage.setLayout(new BorderLayout());
 
-        buttonPanel = new JPanel(new GridLayout(3, 0, 20, 15)); // Default spacing; can be changed
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(270, 150, 60, 150));
+        buttonPanel = new JPanel(new GridLayout(3, 0, 5, 5)); // Default spacing; can be changed
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(290, 150, 100, 150));
         buttonPanel.setOpaque(false);
 
         backgroundImage.add(buttonPanel, BorderLayout.CENTER);
@@ -22,24 +22,25 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
     }
 
     // helper methods ...
-    protected JButton addButton(String text, ActionListener listener) {
-        JButton button = new JButton(text);
-
-        // disable focus on text
+    protected JButton addButton(ImageIcon icon, ActionListener listener) {
+        JButton button = new JButton(); // No text in the constructor
+    
+        // Set the image icon for the button
+        button.setIcon(icon);
+    
+        // Remove focus outline on the button
         button.setFocusable(false);
-
-        // Set font and size
-        button.setFont(new Font("Trebuchet MS", Font.BOLD, 18));
-
-        // Set background color
-        button.setBackground(new Color(0, 0, 0));
-
-        // Set text color
-        button.setForeground(new Color(255, 255, 255));
-
-        button.setBorder(BorderFactory.createLineBorder(new Color(255, 173, 1), 2)); // Border color and thickness
+    
+        // Remove default background and border for a cleaner look
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+    
+        // Add action listener
         button.addActionListener(listener);
+    
+        // Add the button to the panel
         buttonPanel.add(button);
+    
         return button;
     }
 
@@ -53,29 +54,49 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
 
 ////////////////////////////////
 //////////MAIN MENU/////////////
+////////////////////////////////
 class MainMenu extends BaseMenu {
 
     public MainMenu(JFrame frame) {
         super(frame);
-
-        // add buttons ([STRING_LABEL] , [ACTION])
-        addButton("START", e -> navigateTo(new GameMenu(frame)));
-        addButton("SCORES", e -> JOptionPane.showMessageDialog(frame, "scorerere"));
-        addButton("EXIT", e -> System.exit(0));
+    
+        // Create ImageIcon objects for each button
+        ImageIcon startIcon = new ImageIcon("src/images/buttons/start_button.png");
+        ImageIcon scoresIcon = new ImageIcon("src/images/buttons/scores_button.png");
+        ImageIcon exitIcon = new ImageIcon("src/images/buttons/exit_button.png");
+    
+        // Add buttons with icons
+        addButton(startIcon, e -> navigateTo(new GameMenu(frame)));
+        addButton(scoresIcon, e -> JOptionPane.showMessageDialog(frame, "scorerere"));
+        addButton(exitIcon, e -> System.exit(0));
     }
 }
 
 ////////////////////////////////
 //////////GAME MENU/////////////
+////////////////////////////////
 class GameMenu extends BaseMenu {
 
     public GameMenu(JFrame frame) {
         super(frame);
+
+        // Create ImageIcon objects for each button
+        ImageIcon slotIcon = new ImageIcon("src/images/buttons/slot_machine_button.png");
+        ImageIcon lucky9Icon = new ImageIcon("src/images/buttons/lucky9_button.png");
+        ImageIcon balanceIcon = new ImageIcon("src/images/buttons/balance_button.png");
+        ImageIcon backIcon = new ImageIcon("src/images/buttons/back_button.png");
+    
+        // Add buttons with icons
+        addButton(slotIcon, e -> navigateTo(new SlotMachine(frame)));
+        addButton(lucky9Icon, e -> JOptionPane.showMessageDialog(frame, "luckyy"));
+        addButton(balanceIcon, e -> navigateTo(new Balance(frame)));
+        addButton(backIcon, e -> navigateTo(new MainMenu(frame)));
 
         // add buttons ([STRING_LABEL] , [ACTION])
         addButton("SLOT MACHINE", e -> navigateTo(new SlotMachine(frame)));
         addButton("LUCKY9", e -> navigateTo(new Lucky9(frame)));
         addButton("BALANCE", e -> JOptionPane.showMessageDialog(frame, "balbalbal"));
         addButton("BACK", e -> navigateTo(new MainMenu(frame)));
+
     }
 }
