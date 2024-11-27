@@ -14,6 +14,7 @@ public class SlotMachine extends Game {
     private HashMap<String, String> iconImages; // holds keys as image's label, and value as img path
     private String[] result;
     private boolean isSpinning;
+
     private JLabel icon1, icon2, icon3;
     private JLabel moneyLabel;
     private JPanel bottomPanel;
@@ -23,11 +24,6 @@ public class SlotMachine extends Game {
     // CONSTRUCTOR //
     public SlotMachine(JFrame frame) {
         super(frame);
-
-        System.out.println(PlayerStorage.getTotalSpins());
-        System.out.println(PlayerStorage.getTotalEarnings());
-        System.out.println(PlayerStorage.getTotalLosses());
-        System.out.println(PlayerStorage.getMoney());
 
         // initalize the icons array
         icons = new String[] { "Seven", "Cherry", "Lemon", "Orange", "Plum", "Bar", "Star" };

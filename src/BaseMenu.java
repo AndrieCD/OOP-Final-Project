@@ -74,7 +74,7 @@ class GameMenu extends BaseMenu {
 
         // add buttons ([STRING_LABEL] , [ACTION])
         addButton("SLOT MACHINE", e -> navigateTo(new SlotMachine(frame)));
-        addButton("LUCKY9", e -> JOptionPane.showMessageDialog(frame, "luckyy"));
+        addButton("LUCKY9", e -> navigateTo(new Lucky9(frame)));
         addButton("BALANCE", e -> JOptionPane.showMessageDialog(frame, "balbalbal"));
         addButton("BACK", e -> navigateTo(new MainMenu(frame)));
     }

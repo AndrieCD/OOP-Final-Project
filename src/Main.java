@@ -1,5 +1,7 @@
+// MAIN.JAVA
+
 import javax.swing.*; // provides us with the classes and fields for GUI creation and management
-import java.awt.event.*;
+import java.awt.event.*; // allows us to detect and manage events
 
 public class Main implements BaseDisplay {
 
@@ -18,11 +20,12 @@ public class Main implements BaseDisplay {
 
         PlayerStorage.loadData(); // load data on launch, if there's any
 
+        // on 'X' button press on window/frame...
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
 
                 PlayerStorage.saveData(); // save data
-                System.exit(0);
+                System.exit(0); // we exit the program
 
             }
         });
