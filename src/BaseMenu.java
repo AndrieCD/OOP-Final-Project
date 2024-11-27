@@ -96,12 +96,12 @@ class MainMenu extends BaseMenu {
     
         //for main menu buttons
         ImageIcon startIcon = new ImageIcon("src/images/buttons/start_button.png");
-        ImageIcon scoresIcon = new ImageIcon("src/images/buttons/scores_button.png");
+        //ImageIcon scoresIcon = new ImageIcon("src/images/buttons/scores_button.png");
         ImageIcon exitIcon = new ImageIcon("src/images/buttons/exit_button.png");
     
         //navigation
         addButton(startIcon, e -> navigateTo(new GameMenu(frame)));
-        addButton(scoresIcon, e -> JOptionPane.showMessageDialog(frame, "scorerere"));
+        //addButton(scoresIcon, e -> JOptionPane.showMessageDialog(frame, "scorerere"));
         addButton(exitIcon, e -> System.exit(0));
     }
 }
