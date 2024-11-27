@@ -80,7 +80,7 @@ class GameMenu extends BaseMenu {
             }
         });
         
-        addButton(lucky9Icon, e -> JOptionPane.showMessageDialog(frame, "luckyy"));
+        addButton(lucky9Icon, e -> navigateTo(new Lucky9(frame)));
         addButton(balanceIcon, e -> navigateTo(new Balance(frame)));
         addButton(backIcon, e -> navigateTo(new MainMenu(frame)));
     }
