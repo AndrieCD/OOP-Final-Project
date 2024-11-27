@@ -61,6 +61,7 @@ public class Lucky9Prototype{
         List<Card> dealerHand = new ArrayList<>();
 
         System.out.println("===== WELCOME TO LUCKY9 =====");
+
         // draw cards for Player and Dealer
         playerHand.add(deck.dealCard());
         playerHand.add(deck.dealCard());
@@ -74,7 +75,7 @@ public class Lucky9Prototype{
 
         // display initial hands
         System.out.println("Player's Hand: " + playerHand);
-        System.out.println("Dealer's Hand: " + dealerHand.get(0) + ", ???");
+        System.out.println("Dealer's Hand: [" + dealerHand.get(0) + ", ???]");
 
         System.out.println("Player: " + playerScore);
         System.out.println("Dealer: ???");
