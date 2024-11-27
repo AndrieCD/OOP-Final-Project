@@ -33,6 +33,9 @@ class Balance extends BaseMenu {
 
         loanAmount = 0; 
 
+        buttonPanel.setLayout(new GridLayout(4, 1, 10, 10)); // Tighter spacing
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50)); 
+
         // button label balance
         balanceLabel = new JLabel("Current Balance: " + PlayerStorage.getMoney() + " coins");
         balanceLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
