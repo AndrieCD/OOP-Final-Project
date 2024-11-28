@@ -1,12 +1,10 @@
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 import javax.swing.*;
-import javax.swing.border.Border;
+
 
 public class Lucky9 extends Game {
-    private HashMap<String, String> cardImages;
     private String[] icons;
     private JTextField betInput;
     private JPanel bottomPanel;
@@ -26,8 +24,7 @@ public class Lucky9 extends Game {
         // Initialize card icons and hands
         icons = new String[] { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
         playerHand = new ArrayList<>();
-        dealerHand = new ArrayList<>();
-        cardImages = new HashMap<>();
+        dealerHand = new ArrayList<>(); 
 
         topPanel = new JPanel(new BorderLayout());
 
@@ -79,7 +76,7 @@ public class Lucky9 extends Game {
         int dealerScore = calculateHandScore(dealerHand);
 
         //for natural 9s
-        
+        //player natural 9
         if (playerScore == 9)
         {
             showPlayerHand(playerHand);
@@ -103,6 +100,7 @@ public class Lucky9 extends Game {
             return;
          }
 
+         //dealer natural 9
          if (dealerScore == 9)
         {
             showPlayerHand(playerHand);
@@ -164,6 +162,7 @@ public class Lucky9 extends Game {
             //recalculate score
             dealerScore = calculateHandScore(dealerHand);
 
+            //show points to player
             JOptionPane.showMessageDialog(null, "Player Score: " + playerScore + "\nDealer Score: " + dealerScore,
                 "Score", JOptionPane.INFORMATION_MESSAGE);
         } 
@@ -172,9 +171,10 @@ public class Lucky9 extends Game {
         determineWinner(playerScore, dealerScore);
 
         processWinLoss();
-
+        //update money label
         updateMoneyLabel();
     }
+
     // used to process who wins the game
     private void determineWinner(int playerScore, int dealerScore) {
         if (playerScore > dealerScore) {
@@ -187,7 +187,6 @@ public class Lucky9 extends Game {
     }
 
     // --------- BET METHOD ------------ //
-    // ginaya q nlng ung bet method ng slotMachine -Crishia
     protected void bet() {
         JPanel bettingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         bettingPanel.setOpaque(false); // Transparent background
@@ -261,9 +260,8 @@ public class Lucky9 extends Game {
             // Update bet and clear input
             this.bet = validateBet;
             PlayerStorage.setMoney(PlayerStorage.getMoney() - this.bet);
-            updateMoneyLabel();
-            startGame(); // nilipat ko dto ung startgame() para mag validate muna ng input bet bago
-                         // magstart ung game
+            updateMoneyLabel();// after validating the bet update money label
+            startGame(); //start game
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Invalid input! Please enter a numeric value.", "Error",
@@ -279,12 +277,12 @@ public class Lucky9 extends Game {
 
         for (String card : hand) {
             switch (card) {
-                case "Ace":
+                case "Ace": //getting an ace will give u the score of 1
                     total += 1;
                     break;
                 case "Jack":
                 case "Queen":
-                case "King":
+                case "King": //getting a face card is a 0
                     total += 0;
                     break;
                 default:
@@ -300,37 +298,34 @@ public class Lucky9 extends Game {
     private void updateMoneyLabel() {
         moneyLabel.setText("Money: " + PlayerStorage.getMoney());
     }
-
+    //initialize the display
     private void initializeDisplay() {
         // Create a label to display the player's money, set properties
         bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setOpaque(false);
 
+        //add bottom panel to the background and set position
         background.add(bottomPanel, BorderLayout.SOUTH);
-        /* 
-        topPanel = new JPanel(new BorderLayout());
-        topPanel.setOpaque(false);
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        */
         
-        
+        //make player hand label 
         playerHandLabel = new JLabel("Player Hand: [ ]");
         playerHandLabel.setForeground(Color.WHITE);
         playerHandLabel.setHorizontalAlignment(SwingConstants.LEFT); // Center the text horizontally
         playerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the player label
         playerHandLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         
+        //dealer hand label
         dealerHandLabel = new JLabel("Dealer Hand: [ ]");
         dealerHandLabel.setForeground(Color.WHITE);
         dealerHandLabel.setHorizontalAlignment(SwingConstants.RIGHT); // Center the text horizontally
         dealerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the dealer label
         dealerHandLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-
-
+        //center the player hand panel
         this.playerHandPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         this.dealerHandPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
+        //add the respective hand lable to their panels
         playerHandPanel.setOpaque(false); 
         playerHandPanel.add(playerHandLabel);
         dealerHandPanel.setOpaque(false); 
@@ -341,11 +336,11 @@ public class Lucky9 extends Game {
 
         bottomPanel.add(dealerHandPanel);
 
-        
+        //add the betting class
         bet();
     }
 
-
+    //show the hand of the player
     private void showPlayerHand(ArrayList<String> playerHand)  
     {
 
@@ -357,14 +352,14 @@ public class Lucky9 extends Game {
 
         playerHandLabel.setText("Player Hand: [ " + playercards + "]");
     } 
-
+    //hide the second card of the dealer from the player
     private void showDealerHand(ArrayList<String> dealerHand)
     {
         String dealercards = dealerHand.get(0);
 
         dealerHandLabel.setText("Dealer Hand: [ " + dealercards + " ??? ]");
     } 
-
+    //this is to reveal to the player all the cards of the dealer
     private void showDealerHandFinal(ArrayList<String> dealerHand)
     {
         String dealercards = "";
