@@ -14,7 +14,6 @@ public class Lucky9 extends Game {
     private JLabel dealerHandLabel;
     private ArrayList<String> playerHand;
     private ArrayList<String> dealerHand;
-    private int bet;
     private JPanel playerHandPanel;
     private JPanel dealerHandPanel;
 
@@ -38,7 +37,8 @@ public class Lucky9 extends Game {
 
         frame.add(topPanel, BorderLayout.CENTER);
 
-        this.multiplier = 2.00;
+        this.multiplier = 0;
+
 
         // Initialize the game display
         initializeDisplay();
@@ -133,7 +133,10 @@ public class Lucky9 extends Game {
         showDealerHand(dealerHand);
 
          //ask player if they want to draw another card
-        var selection = JOptionPane.showConfirmDialog(null, "Do you want to draw another card?", "Draw Card?", JOptionPane.YES_NO_OPTION);
+        var selection = JOptionPane.showConfirmDialog(null, 
+                                                                "Do you want to draw another card?", 
+                                                                "Draw Card?", 
+                                                                JOptionPane.YES_NO_OPTION);
         if (selection == 0) 
         {
             //deal card to player
@@ -177,19 +180,26 @@ public class Lucky9 extends Game {
 
         // Determine the winner (optional logic)
         determineWinner(playerScore, dealerScore);
-        
+        //process distribution of points
         processWinLoss();
         //update money label
         updateMoneyLabel();
     }
 
     // used to process who wins the game
-    private void determineWinner(int playerScore, int dealerScore) {
-        if (playerScore > dealerScore) {
+    private void determineWinner(int playerScore, int dealerScore) 
+    {
+        if (playerScore > dealerScore) 
+        {
+            this.multiplier = 1.5;
             JOptionPane.showMessageDialog(null, "Player wins!", "Result", JOptionPane.INFORMATION_MESSAGE);
-        } else if (dealerScore > playerScore) {
+        } else if (dealerScore > playerScore) 
+        {
+            this.multiplier = 0.0;
             JOptionPane.showMessageDialog(null, "Dealer wins!", "Result", JOptionPane.INFORMATION_MESSAGE);
-        } else {
+        } else 
+        {
+            this.multiplier = 1.0;
             JOptionPane.showMessageDialog(null, "It's a tie!", "Result", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -378,15 +388,19 @@ public class Lucky9 extends Game {
 
         dealerHandLabel.setText("Dealer Hand: [ " + dealercards + "]");
     } 
-    private JButton getButtonFromPanel(JPanel panel, String buttonText) {
-        for (Component comp : panel.getComponents()) {
+    private JButton getButtonFromPanel(JPanel panel, String buttonText) 
+    {
+        for (Component comp : panel.getComponents()) 
+        {
             if (comp instanceof JButton) {
                 JButton button = (JButton) comp;
-                if (button.getText().equals(buttonText)) {
+                if (button.getText().equals(buttonText)) 
+                {
                     return button; // Return the button if its text matches "BET"
                 }
             }
         }
         return null; // Return null if button is not found
     }
+      
 }
