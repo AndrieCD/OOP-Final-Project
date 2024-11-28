@@ -1,6 +1,7 @@
 //needs improvement
 //the ummm,, picture isn't showing, the gameover png
 //manmaged to show the other stats, but there on the left corner
+//new new
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
