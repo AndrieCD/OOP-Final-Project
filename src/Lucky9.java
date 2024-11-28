@@ -29,9 +29,6 @@ public class Lucky9 extends Game {
         dealerHand = new ArrayList<>();
         cardImages = new HashMap<>();
 
-        // Load card images
-        loadCardImages();
-
         topPanel = new JPanel(new BorderLayout());
 
         playerHandPanel = new JPanel(new FlowLayout());
@@ -46,24 +43,6 @@ public class Lucky9 extends Game {
 
         // Initialize the game display
         initializeDisplay();
-    }
-
-    private void loadCardImages() {
-
-        cardImages.put("Ace", "src/images/ace.png");
-        cardImages.put("2", "src/images/2.png");
-        cardImages.put("3", "src/images/3.png");
-        cardImages.put("4", "src/images/4.png");
-        cardImages.put("5", "src/images/5.png");
-        cardImages.put("6", "src/images/6.png");
-        cardImages.put("7", "src/images/7.png");
-        cardImages.put("8", "src/images/8.png");
-        cardImages.put("9", "src/images/9.png");
-        cardImages.put("10", "src/images/10.png");
-        cardImages.put("Jack", "src/images/jack.png");
-        cardImages.put("Queen", "src/images/queen.png");
-        cardImages.put("King", "src/images/king.png");
-
     }
 
     private void dealCardToPlayer() {
@@ -105,17 +84,48 @@ public class Lucky9 extends Game {
         {
             showPlayerHand(playerHand);
 
-            showDealerHand(dealerHand);
+            showDealerHandFinal(dealerHand);
+
+            JOptionPane.showMessageDialog(null, "Player Score: " + playerScore + "\nDealer Score: " + dealerScore,
+                "Score", JOptionPane.INFORMATION_MESSAGE);
 
             JOptionPane.showMessageDialog(null, 
-                                                "Player Natural 9! Player Wins!",
+                                                "Player Natural 9!",
                                                 "Game Result", 
                                                 JOptionPane.INFORMATION_MESSAGE);
 
             determineWinner(playerScore, dealerScore);
 
             processWinLoss();
+
+            updateMoneyLabel();
+
+            return;
          }
+
+         if (dealerScore == 9)
+        {
+            showPlayerHand(playerHand);
+
+            showDealerHandFinal(dealerHand);
+
+            JOptionPane.showMessageDialog(null, "Player Score: " + playerScore + "\nDealer Score: " + dealerScore,
+                "Score", JOptionPane.INFORMATION_MESSAGE);
+
+            JOptionPane.showMessageDialog(null, 
+                                                "Dealer Natural 9!",
+                                                "Game Result", 
+                                                JOptionPane.INFORMATION_MESSAGE);
+
+            determineWinner(playerScore, dealerScore);
+
+            processWinLoss();
+
+            updateMoneyLabel();
+
+            return;
+         }
+
 
         showPlayerHand(playerHand);
 
@@ -162,6 +172,8 @@ public class Lucky9 extends Game {
         determineWinner(playerScore, dealerScore);
 
         processWinLoss();
+
+        updateMoneyLabel();
     }
     // used to process who wins the game
     private void determineWinner(int playerScore, int dealerScore) {
@@ -305,13 +317,13 @@ public class Lucky9 extends Game {
         playerHandLabel = new JLabel("Player Hand: [ ]");
         playerHandLabel.setForeground(Color.WHITE);
         playerHandLabel.setHorizontalAlignment(SwingConstants.LEFT); // Center the text horizontally
-        playerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the money label
+        playerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the player label
         playerHandLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         
         dealerHandLabel = new JLabel("Dealer Hand: [ ]");
         dealerHandLabel.setForeground(Color.WHITE);
         dealerHandLabel.setHorizontalAlignment(SwingConstants.RIGHT); // Center the text horizontally
-        dealerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the money label
+        dealerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the dealer label
         dealerHandLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
 
