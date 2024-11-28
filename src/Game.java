@@ -3,15 +3,18 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public abstract class Game extends JPanel implements BaseDisplay {
+    // declare our fields relating to graphics
     protected JFrame frame;
     protected JPanel buttonPanel;
     protected JPanel topPanel;
     protected JPanel backButtPanel;
     protected JLabel background;
+    // declare the bet and multiplier fields.
     protected int bet;
     protected double multiplier;
 
     public Game(JFrame frame) {
+        // pass along the frame from Main.java so we can use it here
         this.frame = frame;
         setLayout(new BorderLayout());
 
@@ -41,7 +44,7 @@ public abstract class Game extends JPanel implements BaseDisplay {
         backButtPanel.setBorder(BorderFactory.createEmptyBorder(35, 28, 0, 0));
 
         // Add action listener to the button
-        backButton.addActionListener(e -> play());
+        backButton.addActionListener(e -> back());
 
         // Add button to the panel
         backButtPanel.add(backButton);
@@ -61,7 +64,7 @@ public abstract class Game extends JPanel implements BaseDisplay {
         balance.triggerBankruptcyCheck();
     }
 
-    // helper method ...
+    // helper method for creating buttons...
     protected JButton addButton(String text, ActionListener listener) {
         JButton button = new JButton(text);
         button.addActionListener(listener);
@@ -69,7 +72,8 @@ public abstract class Game extends JPanel implements BaseDisplay {
         return button;
     }
 
-    private void play() {
+    // back() method to go back to Game Menu
+    private void back() {
         GameMenu gameMenu = new GameMenu(frame);
         frame.getContentPane().removeAll();
         frame.add(gameMenu);
@@ -77,6 +81,7 @@ public abstract class Game extends JPanel implements BaseDisplay {
         frame.repaint();
     }
 
+    // method to process wins or losses
     protected void processWinLoss() {
         int winLoss = (int) (this.bet * this.multiplier);
         if (PlayerStorage.getLoanAmount() > 0) { // if in debt, pay half our debt with half of earnings
@@ -94,6 +99,16 @@ public abstract class Game extends JPanel implements BaseDisplay {
         } else {
             // save our earnings
             PlayerStorage.setTotalEarnings(PlayerStorage.getTotalEarnings() + (winLoss - this.bet));
+        }
+
+        checkBankruptcy();
+    }
+
+    private void checkBankruptcy() {
+        if (PlayerStorage.getMoney() <= 0 && Balance.globalLoanPool <= 0) {
+            JOptionPane.showMessageDialog(frame, "You are bankrupt! No money and no loans available.", "Bankruptcy",
+                    JOptionPane.ERROR_MESSAGE);
+            new GameOverFrame(frame);
         }
     }
 

@@ -11,17 +11,19 @@ import java.awt.event.ActionListener;
 // -------------------S--L--O--T----M--A--C--H--I--N--E---------------------
 // -------------------------------------------------------------------------
 public class SlotMachine extends Game {
+    // non graphics related fields
     private final HashMap<String, Double> winningPatterns;
     private final String[] icons;
     private HashMap<String, String> iconImages; // holds keys as image's label, and value as img path
     private String[] result;
     private boolean isSpinning;
+    private String lastIcon;
 
+    // graphics related fields
     private JLabel icon1, icon2, icon3;
     private JLabel moneyLabel;
     private JPanel bottomPanel;
     private JTextField betInput;
-    private String lastIcon;
 
     // CONSTRUCTOR //
     public SlotMachine(JFrame frame) {
@@ -215,10 +217,12 @@ public class SlotMachine extends Game {
         System.out.println("Result: " + result[0] + " " + result[1] + " " + result[2]);
         System.out.println("Multiplier: " + this.multiplier);
 
+        // we process the spin
         processWinLoss();
         this.bet = 0;
         updateMoneyLabel();
 
+        // set our flag to false
         this.isSpinning = false;
         PlayerStorage.setTotalSpins(PlayerStorage.getTotalSpins() + 1);
     }
@@ -305,6 +309,7 @@ public class SlotMachine extends Game {
 
     // VALIDATES THE BET //
     private void validateBet() {
+        // avoid betting whiel spinning
         if (isSpinning) {
             JOptionPane.showMessageDialog(null, "You cannot bet while spinning!", "Error",
                     JOptionPane.WARNING_MESSAGE);
@@ -316,6 +321,7 @@ public class SlotMachine extends Game {
             String input = betInput.getText().trim();
             int validateBet = Integer.parseInt(input);
 
+            // bet cannot exceed current money or be less than or equal to 0
             if (validateBet > PlayerStorage.getMoney()) {
                 throw new IllegalArgumentException("Bet exceeds available money!");
             } else if (validateBet <= 0) {

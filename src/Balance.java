@@ -23,7 +23,7 @@ class Balance extends BaseMenu {
     private JButton loanButton;
     private JButton backButton;
 
-    private static int globalLoanPool;
+    static int globalLoanPool; // package-wide visibility
 
     public Balance(JFrame frame) {
         super(frame);
@@ -119,12 +119,11 @@ class Balance extends BaseMenu {
     }
 
     private void checkBankruptcy() {
-        if (PlayerStorage.getMoney() <= 0 && globalLoanPool <= 0) {
+        if (PlayerStorage.getMoney() <= 0 && Balance.globalLoanPool <= 0) {
             JOptionPane.showMessageDialog(frame, "You are bankrupt! No money and no loans available.", "Bankruptcy",
                     JOptionPane.ERROR_MESSAGE);
             new GameOverFrame(frame);
         }
-
     }
 
 }
