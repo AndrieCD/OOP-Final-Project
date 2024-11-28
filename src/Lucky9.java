@@ -23,7 +23,7 @@ public class Lucky9 extends Game {
         super(frame);
 
         // Initialize card icons and hands
-        icons = new String[]{"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+        icons = new String[] { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
         playerHand = new ArrayList<>();
         dealerHand = new ArrayList<>();
         cardImages = new HashMap<>();
@@ -40,7 +40,6 @@ public class Lucky9 extends Game {
         topPanel.add(playerHandPanel, BorderLayout.CENTER);
         topPanel.add(new JLabel("Dealer Hand:"), BorderLayout.EAST);
         topPanel.add(dealerHandPanel, BorderLayout.SOUTH);
-        
 
         frame.add(topPanel, BorderLayout.CENTER);
 
@@ -64,7 +63,6 @@ public class Lucky9 extends Game {
         cardImages.put("Queen", "src/images/queen.png");
         cardImages.put("King", "src/images/king.png");
 
-        
     }
 
     private void dealCardToPlayer() {
@@ -84,14 +82,14 @@ public class Lucky9 extends Game {
         Random rand = new Random();
         return icons[rand.nextInt(icons.length)];
     }
-    
 
     private void updateHandDisplay(ArrayList<String> hand, JPanel handPanel) {
         handPanel.removeAll(); // Clear previous cards
 
         for (String card : hand) {
             String imagePath = cardImages.get(card); // Get the image path for the card
-            ImageIcon imgIcon = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(70, 100, Image.SCALE_SMOOTH));
+            ImageIcon imgIcon = new ImageIcon(
+                    new ImageIcon(imagePath).getImage().getScaledInstance(70, 100, Image.SCALE_SMOOTH));
             JLabel cardLabel = new JLabel(imgIcon); // Create JLabel for the card
             handPanel.add(cardLabel); // Add the card to the panel
         }
@@ -118,40 +116,41 @@ public class Lucky9 extends Game {
         int playerScore = calculateHandScore(playerHand);
         int dealerScore = calculateHandScore(dealerHand);
 
-        //for natural 9s
-        
-        if (playerScore == 9){
-            System.out.println("Player Natural 9! PLAYER WINS!");
-            
-         }
-         
-    
-        /*prompt player if he wants to draw more
-        System.out.print("Do you want to draw another card? (Yes/No): ");
-        String choice = scanner.nextLine();
-        if (choice.equalsIgnoreCase("yes")) {
-            playerHand.add(deck.dealCard());
-            playerScore = calculateScore(playerHand);
-            System.out.println("Player's New Hand: " + playerHand);
-            System.out.println("Dealer's Hand: " + dealerHand);
-        } */
+        // for natural 9s
 
-        //if dealer  has less than or equal to 4 value of cards they draw more
-        if (dealerScore <= 4){
+        if (playerScore == 9) {
+            System.out.println("Player Natural 9! PLAYER WINS!");
+
+        }
+
+        /*
+         * prompt player if he wants to draw more
+         * System.out.print("Do you want to draw another card? (Yes/No): ");
+         * String choice = scanner.nextLine();
+         * if (choice.equalsIgnoreCase("yes")) {
+         * playerHand.add(deck.dealCard());
+         * playerScore = calculateScore(playerHand);
+         * System.out.println("Player's New Hand: " + playerHand);
+         * System.out.println("Dealer's Hand: " + dealerHand);
+         * }
+         */
+
+        // if dealer has less than or equal to 4 value of cards they draw more
+        if (dealerScore <= 4) {
             System.out.println("Dealer score is less than or equal to 4!\nThey draw another card!");
-            
-            //add new card to dealer's hand
+
+            // add new card to dealer's hand
             dealCardToDealer();
-            
-            //recalculate dealer's score
+
+            // recalculate dealer's score
             dealerScore = calculateHandScore(dealerHand);
-            
+
             System.out.println("Player's Hand: " + playerHand);
             System.out.println("Dealer's New Hand: " + dealerHand);
-            
+
             System.out.println("Player: " + playerScore);
             System.out.println("Dealer: " + dealerScore);
-        } 
+        }
 
         JOptionPane.showMessageDialog(null, "Player Score: " + playerScore + "\nDealer Score: " + dealerScore,
                 "Game Start", JOptionPane.INFORMATION_MESSAGE);
@@ -172,61 +171,62 @@ public class Lucky9 extends Game {
         }
     }
 
-    // --------- BET METHOD ------------ // 
+    // --------- BET METHOD ------------ //
     // ginaya q nlng ung bet method ng slotMachine -Crishia
     protected void bet() {
         JPanel bettingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         bettingPanel.setOpaque(false); // Transparent background
-    
+
         // Set a bottom padding using an empty border (if needed)
         bettingPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-        
+
         // Input field for the bet amount
         betInput = new JTextField(9); // Single-line input
         betInput.setFont(new Font("Trebuchet MS", Font.PLAIN, 16));
         betInput.setToolTipText("Enter your bet here");
         betInput.setForeground(Color.BLACK);
-        
+
         // Label for bet input
         JLabel betLabel = new JLabel("Enter Bet: ");
         betLabel.setForeground(Color.WHITE);
         betLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
-    
+
         // Add the label and text field to the betting panel
         bettingPanel.add(betLabel);
         bettingPanel.add(betInput);
-    
+
         // MONEY Label
         moneyLabel = new JLabel("Money: " + PlayerStorage.getMoney());
         moneyLabel.setForeground(Color.WHITE);
         moneyLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the text horizontally
-        moneyLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the money label
+        moneyLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16)); // Set a consistent font for the money label
         moneyLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-    
+
         // Create a new JPanel to center the money label
-        JPanel moneyPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));  // FlowLayout to center content
-        moneyPanel.setOpaque(false);  // Transparent background
-        moneyPanel.add(moneyLabel);  // Add the money label to the centered panel
-    
+        JPanel moneyPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // FlowLayout to center content
+        moneyPanel.setOpaque(false); // Transparent background
+        moneyPanel.add(moneyLabel); // Add the money label to the centered panel
+
         // Set the layout of bottomPanel to BoxLayout to stack components vertically
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
         bottomPanel.setOpaque(false);
-    
+
         // Add the betting panel and money panel to the bottom panel
-        bottomPanel.add(bettingPanel);  // Add the betting input panel first
-        bottomPanel.add(moneyPanel);    // Add the centered money label below it
+        bottomPanel.add(bettingPanel); // Add the betting input panel first
+        bottomPanel.add(moneyPanel); // Add the centered money label below it
         bottomPanel.add(buttonPanel); // Add the buttonPanel(betButton) below it
 
         // BET BUTTON
         addButton("BET", e -> validateBet());
-        
+
         // Setup the BET button style
         JButton betButton = (JButton) getButtonFromPanel(buttonPanel, "BET");
         if (betButton != null) {
             betButton.setBackground(new Color(235, 58, 48));
             betButton.setForeground(Color.WHITE); // Set text color to white
-            betButton.setFont(new Font("Trebuchet MS", Font.BOLD, 18));  // Set font style and size
-            buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 200, 0));  // 10px top margin, no margin on other sides
+            betButton.setFont(new Font("Trebuchet MS", Font.BOLD, 18)); // Set font style and size
+            buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 200, 0)); // 10px top margin, no margin on
+                                                                                   // other sides
         }
     }
 
@@ -247,7 +247,8 @@ public class Lucky9 extends Game {
             this.bet = validateBet;
             PlayerStorage.setMoney(PlayerStorage.getMoney() - this.bet);
             updateMoneyLabel();
-            startGame(); // nilipat ko dto ung startgame() para mag validate muna ng input bet bago magstart ung game
+            startGame(); // nilipat ko dto ung startgame() para mag validate muna ng input bet bago
+                         // magstart ung game
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Invalid input! Please enter a numeric value.", "Error",
@@ -296,22 +297,18 @@ public class Lucky9 extends Game {
         topPanel.setOpaque(false);
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         topPanel.add(playerHandPanel, BorderLayout.NORTH);
-        background.add(topPanel, BorderLayout.NORTH); 
-        
+        background.add(topPanel, BorderLayout.NORTH);
+
         playerHandLabel = new JLabel("Player Hand: ");
         playerHandLabel.setForeground(Color.WHITE);
         playerHandLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the text horizontally
-        playerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the money label
+        playerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16)); // Set a consistent font for the money label
         playerHandLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-
         this.playerHandPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        playerHandPanel.setOpaque(false); 
+        playerHandPanel.setOpaque(false);
         playerHandPanel.add(playerHandLabel);
 
-        
-        
-        
         bet();
     }
 
@@ -320,10 +317,10 @@ public class Lucky9 extends Game {
             if (comp instanceof JButton) {
                 JButton button = (JButton) comp;
                 if (button.getText().equals(buttonText)) {
-                    return button;  // Return the button if its text matches "BET"
+                    return button; // Return the button if its text matches "BET"
                 }
             }
         }
-        return null;  // Return null if button is not found
+        return null; // Return null if button is not found
     }
 }
