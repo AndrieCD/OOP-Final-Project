@@ -13,6 +13,7 @@ public class Lucky9 extends Game {
     private JPanel topPanel;
     private JLabel moneyLabel;
     private JLabel playerHandLabel;
+    private JLabel dealerHandLabel;
     private ArrayList<String> playerHand;
     private ArrayList<String> dealerHand;
     private int bet;
@@ -70,13 +71,11 @@ public class Lucky9 extends Game {
     private void dealCardToPlayer() {
         String card = drawRandomCard();
         playerHand.add(card); // Add card to player's hand
-        updateHandDisplay(playerHand, playerHandPanel);
     }
 
     private void dealCardToDealer() {
         String card = drawRandomCard();
         dealerHand.add(card); // Add card to dealer's hand
-        updateHandDisplay(dealerHand, dealerHandPanel);
     }
 
     private String drawRandomCard() {
@@ -85,20 +84,6 @@ public class Lucky9 extends Game {
         return icons[rand.nextInt(icons.length)];
     }
     
-
-    private void updateHandDisplay(ArrayList<String> hand, JPanel handPanel) {
-        handPanel.removeAll(); // Clear previous cards
-
-        for (String card : hand) {
-            String imagePath = cardImages.get(card); // Get the image path for the card
-            ImageIcon imgIcon = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(70, 100, Image.SCALE_SMOOTH));
-            JLabel cardLabel = new JLabel(imgIcon); // Create JLabel for the card
-            handPanel.add(cardLabel); // Add the card to the panel
-        }
-
-        handPanel.revalidate(); // Refresh panel
-        handPanel.repaint();
-    }
 
     private void startGame() {
         // Clear hands for a new game
@@ -111,8 +96,6 @@ public class Lucky9 extends Game {
         dealCardToPlayer();
         dealCardToDealer();
 
-        updateHandDisplay(playerHand, playerHandPanel);
-        updateHandDisplay(dealerHand, dealerHandPanel);
 
         // Calculate and display scores
         int playerScore = calculateHandScore(playerHand);
@@ -120,48 +103,69 @@ public class Lucky9 extends Game {
 
         //for natural 9s
         
-        if (playerScore == 9){
-            System.out.println("Player Natural 9! PLAYER WINS!");
-            
-         }
-         
-    
-        /*prompt player if he wants to draw more
-        System.out.print("Do you want to draw another card? (Yes/No): ");
-        String choice = scanner.nextLine();
-        if (choice.equalsIgnoreCase("yes")) {
-            playerHand.add(deck.dealCard());
-            playerScore = calculateScore(playerHand);
-            System.out.println("Player's New Hand: " + playerHand);
-            System.out.println("Dealer's Hand: " + dealerHand);
-        } */
+        if (playerScore == 9)
+        {
+            showPlayerHand(playerHand);
 
-        //if dealer  has less than or equal to 4 value of cards they draw more
+            showDealerHand(dealerHand);
+
+            JOptionPane.showMessageDialog(null, 
+                                                "Player Natural 9! Player Wins!",
+                                                "Game Result", 
+                                                JOptionPane.INFORMATION_MESSAGE);
+
+            determineWinner(playerScore, dealerScore);
+
+            processWinLoss();
+         }
+
+        showPlayerHand(playerHand);
+
+        showDealerHand(dealerHand);
+
+         //ask player if they want to draw another card
+        var selection = JOptionPane.showConfirmDialog(null, "Do you want to draw another card?", "Draw Card?", JOptionPane.YES_NO_OPTION);
+        if (selection == 0) 
+        {
+            //deal card to player
+            dealCardToPlayer();
+            //show players new hand
+            showPlayerHand(playerHand);
+            //show dealers both cards
+            showDealerHandFinal(dealerHand);
+            //recalculate player score
+            playerScore = calculateHandScore(playerHand);
+        }
+        //show score
+        JOptionPane.showMessageDialog(null, "Player Score: " + playerScore + "\nDealer Score: " + dealerScore,
+                "Score", JOptionPane.INFORMATION_MESSAGE);
+
+        //if dealer  has less than or equal to 4 value of cards they draw one more card
         if (dealerScore <= 4){
-            System.out.println("Dealer score is less than or equal to 4!\nThey draw another card!");
+            JOptionPane.showMessageDialog(null, 
+                                                "Dealer score is less than or equal to 4",
+                                                "Dealer Draws", 
+                                                JOptionPane.INFORMATION_MESSAGE);
             
             //add new card to dealer's hand
             dealCardToDealer();
-            
-            //recalculate dealer's score
-            dealerScore = calculateHandScore(dealerHand);
-            
-            System.out.println("Player's Hand: " + playerHand);
-            System.out.println("Dealer's New Hand: " + dealerHand);
-            
-            System.out.println("Player: " + playerScore);
-            System.out.println("Dealer: " + dealerScore);
-        } 
+            //show player and dealers final hand
+            showPlayerHand(playerHand);
 
-        JOptionPane.showMessageDialog(null, "Player Score: " + playerScore + "\nDealer Score: " + dealerScore,
-                "Game Start", JOptionPane.INFORMATION_MESSAGE);
+            showDealerHandFinal(dealerHand);
+            //recalculate score
+            dealerScore = calculateHandScore(dealerHand);
+
+            JOptionPane.showMessageDialog(null, "Player Score: " + playerScore + "\nDealer Score: " + dealerScore,
+                "Score", JOptionPane.INFORMATION_MESSAGE);
+        } 
 
         // Determine the winner (optional logic)
         determineWinner(playerScore, dealerScore);
 
         processWinLoss();
     }
-
+    // used to process who wins the game
     private void determineWinner(int playerScore, int dealerScore) {
         if (playerScore > dealerScore) {
             JOptionPane.showMessageDialog(null, "Player wins!", "Result", JOptionPane.INFORMATION_MESSAGE);
@@ -291,30 +295,74 @@ public class Lucky9 extends Game {
         bottomPanel.setOpaque(false);
 
         background.add(bottomPanel, BorderLayout.SOUTH);
-
+        /* 
         topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false);
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        topPanel.add(playerHandPanel, BorderLayout.NORTH);
-        background.add(topPanel, BorderLayout.NORTH); 
+        */
         
-        playerHandLabel = new JLabel("Player Hand: ");
+        
+        playerHandLabel = new JLabel("Player Hand: [ ]");
         playerHandLabel.setForeground(Color.WHITE);
-        playerHandLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the text horizontally
+        playerHandLabel.setHorizontalAlignment(SwingConstants.LEFT); // Center the text horizontally
         playerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the money label
         playerHandLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        
+        dealerHandLabel = new JLabel("Dealer Hand: [ ]");
+        dealerHandLabel.setForeground(Color.WHITE);
+        dealerHandLabel.setHorizontalAlignment(SwingConstants.RIGHT); // Center the text horizontally
+        dealerHandLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));  // Set a consistent font for the money label
+        dealerHandLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
 
-        this.playerHandPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        this.playerHandPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        this.dealerHandPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
         playerHandPanel.setOpaque(false); 
         playerHandPanel.add(playerHandLabel);
+        dealerHandPanel.setOpaque(false); 
+        dealerHandPanel.add(dealerHandLabel);
 
-        
-        
+
+        bottomPanel.add(playerHandPanel);
+
+        bottomPanel.add(dealerHandPanel);
+
         
         bet();
     }
 
+
+    private void showPlayerHand(ArrayList<String> playerHand)  
+    {
+
+        String playercards = "";
+        for(String card : playerHand)
+        {
+            playercards += card + " ";
+        }
+
+        playerHandLabel.setText("Player Hand: [ " + playercards + "]");
+    } 
+
+    private void showDealerHand(ArrayList<String> dealerHand)
+    {
+        String dealercards = dealerHand.get(0);
+
+        dealerHandLabel.setText("Dealer Hand: [ " + dealercards + " ??? ]");
+    } 
+
+    private void showDealerHandFinal(ArrayList<String> dealerHand)
+    {
+        String dealercards = "";
+        for(String card : dealerHand)
+        {
+            dealercards += card + " ";
+        }
+
+        dealerHandLabel.setText("Dealer Hand: [ " + dealercards + "]");
+    } 
     private JButton getButtonFromPanel(JPanel panel, String buttonText) {
         for (Component comp : panel.getComponents()) {
             if (comp instanceof JButton) {
