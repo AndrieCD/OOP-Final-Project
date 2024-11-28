@@ -27,7 +27,8 @@ public abstract class Game extends JPanel implements BaseDisplay {
         background.add(buttonPanel, BorderLayout.CENTER);
 
         // BACK BUTTON
-        backButtPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));  // Keep FlowLayout, but remove unnecessary padding
+        backButtPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // Keep FlowLayout, but remove unnecessary
+                                                                           // padding
         backButtPanel.setOpaque(false);
 
         // Create the button
@@ -35,7 +36,7 @@ public abstract class Game extends JPanel implements BaseDisplay {
         backButton.setPreferredSize(new Dimension(90, 45)); // Set button size
         backButton.setBackground(new Color(56, 43, 50));
         backButton.setForeground(Color.WHITE);
-        backButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));  // Button border
+        backButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5)); // Button border
         backButton.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
         backButtPanel.setBorder(BorderFactory.createEmptyBorder(35, 28, 0, 0));
 
@@ -45,7 +46,8 @@ public abstract class Game extends JPanel implements BaseDisplay {
         // Add button to the panel
         backButtPanel.add(backButton);
 
-        // Add panel to the background container (assuming `background` is the parent container)
+        // Add panel to the background container (assuming `background` is the parent
+        // container)
         background.add(backButtPanel, BorderLayout.NORTH);
 
         // add background image to the main panel
@@ -73,6 +75,26 @@ public abstract class Game extends JPanel implements BaseDisplay {
         frame.add(gameMenu);
         frame.revalidate();
         frame.repaint();
+    }
+
+    protected void processWinLoss() {
+        int winLoss = (int) (this.bet * this.multiplier);
+        if (PlayerStorage.getLoanAmount() > 0) { // if in debt, pay half our debt with half of earnings
+            if (winLoss > 1) { // check if we have earnings or wins to pay
+                PlayerStorage.setMoney(PlayerStorage.getMoney() + (int) (winLoss / 2));
+                PlayerStorage.setLoanAmount(PlayerStorage.getLoanAmount() - (int) (winLoss / 2));
+            }
+        } else { // if we're not in debt, then add wins to money
+            PlayerStorage.setMoney(PlayerStorage.getMoney() + winLoss);
+        }
+        // for data saving purposes only...
+        if (winLoss <= 0) {
+            // save our losses
+            PlayerStorage.setTotalLosses(PlayerStorage.getTotalLosses() + this.bet);
+        } else {
+            // save our earnings
+            PlayerStorage.setTotalEarnings(PlayerStorage.getTotalEarnings() + (winLoss - this.bet));
+        }
     }
 
     protected abstract void bet();

@@ -22,15 +22,15 @@ class Balance extends BaseMenu {
     private JLabel loanLabel;
     private JButton loanButton;
     private JButton backButton;
-    
 
-    private static int globalLoanPool = 777; 
-    private int loanAmount; // current loan
+    private static int globalLoanPool;
 
     public Balance(JFrame frame) {
         super(frame);
 
-        loanAmount = 0;
+        // recalibrate globalLoanPool if we're in debt
+        globalLoanPool = 777 - PlayerStorage.getLoanAmount();
+        System.out.println("Global loan pool: " + globalLoanPool);
 
         // Set layout to a 2x2 grid
         buttonPanel.setLayout(new GridLayout(2, 2, 10, 10)); // 2 rows, 2 columns, 10px gaps
@@ -44,7 +44,7 @@ class Balance extends BaseMenu {
         buttonPanel.add(balanceLabel);
 
         // Label for current loan
-        loanLabel = new JLabel("Current Loan: " + loanAmount + " coins");
+        loanLabel = new JLabel("Current Loan: " + PlayerStorage.getLoanAmount() + " coins");
         loanLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
         loanLabel.setForeground(Color.WHITE);
         loanLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -66,35 +66,41 @@ class Balance extends BaseMenu {
     // Inputting how much the user wants to loan
     private void promptLoanInput() {
         if (globalLoanPool <= 0) {
-            JOptionPane.showMessageDialog(frame, "The loan pool is empty. No more loans can be taken.", "Loan Unavailable", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "The loan pool is empty. No more loans can be taken.",
+                    "Loan Unavailable", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        String input = JOptionPane.showInputDialog(frame, "Enter the loan amount (Available: " + globalLoanPool + "):", "Borrow Loan", JOptionPane.PLAIN_MESSAGE);
+        String input = JOptionPane.showInputDialog(frame, "Enter the loan amount (Available: " + globalLoanPool + "):",
+                "Borrow Loan", JOptionPane.PLAIN_MESSAGE);
         if (input != null) {
             try {
                 int amount = Integer.parseInt(input);
                 if (amount <= 0) {
-                    JOptionPane.showMessageDialog(frame, "Loan amount must be greater than zero.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Loan amount must be greater than zero.", "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
                 } else if (amount > globalLoanPool) {
-                    JOptionPane.showMessageDialog(frame, "The loan amount exceeds the available loan pool.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "The loan amount exceeds the available loan pool.",
+                            "Invalid Input", JOptionPane.ERROR_MESSAGE);
                 } else {
                     loanMoney(amount);
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(frame, "Please enter a valid number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Please enter a valid number.", "Invalid Input",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
     // Updating loan information
     private void loanMoney(int amount) {
-        loanAmount += amount;
+        PlayerStorage.setLoanAmount(PlayerStorage.getLoanAmount() + amount);
         globalLoanPool -= amount;
         PlayerStorage.setMoney(PlayerStorage.getMoney() + amount);
 
         updateUIComponents();
-        JOptionPane.showMessageDialog(frame, "Loan approved! You borrowed " + amount + " coins.", "Loan Approved", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, "Loan approved! You borrowed " + amount + " coins.", "Loan Approved",
+                JOptionPane.INFORMATION_MESSAGE);
 
         checkBankruptcy();
     }
@@ -102,7 +108,7 @@ class Balance extends BaseMenu {
     // Updating balance and loan labels
     private void updateUIComponents() {
         balanceLabel.setText("Current Balance: " + PlayerStorage.getMoney() + " coins");
-        loanLabel.setText("Current Loan: " + loanAmount + " coins");
+        loanLabel.setText("Current Loan: " + PlayerStorage.getLoanAmount() + " coins");
         loanButton.setEnabled(globalLoanPool > 0);
     }
 
@@ -114,10 +120,11 @@ class Balance extends BaseMenu {
 
     private void checkBankruptcy() {
         if (PlayerStorage.getMoney() <= 0 && globalLoanPool <= 0) {
-            JOptionPane.showMessageDialog(frame, "You are bankrupt! No money and no loans available.", "Bankruptcy", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "You are bankrupt! No money and no loans available.", "Bankruptcy",
+                    JOptionPane.ERROR_MESSAGE);
             new GameOverFrame(frame);
         }
-        
+
     }
-    
+
 }

@@ -66,7 +66,7 @@ public class PlayerStorage {
         } catch (IOException e) {
             System.out.println("An error occurred while saving the data.");
         }
-        printData();
+        // printData();
     }
 
     public static void loadData() {
