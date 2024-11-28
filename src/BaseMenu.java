@@ -2,21 +2,26 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+// abstract class, BaseMenu that specific menus will further implement
 public abstract class BaseMenu extends JPanel implements BaseDisplay {
     protected JFrame frame;
     protected JPanel buttonPanel;
 
     public BaseMenu(JFrame frame) {
+        // use the frame from Main.java
         this.frame = frame;
         setLayout(new BorderLayout());
 
+        // apply our background
         JLabel backgroundImage = new JLabel(BaseDisplay.background);
         backgroundImage.setLayout(new BorderLayout());
 
+        // create a panel to ocntain our buttons
         buttonPanel = new JPanel(new GridLayout(3, 0, 10, 15));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(290, 150, 100, 150));
         buttonPanel.setOpaque(false);
 
+        // add the buttonPanel on the background
         backgroundImage.add(buttonPanel, BorderLayout.CENTER);
         add(backgroundImage);
     }
@@ -47,6 +52,7 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
         return button;
     }
 
+    // helper method for button navigation
     protected void navigateTo(JPanel panel) {
         frame.getContentPane().removeAll();
         frame.add(panel);
@@ -57,8 +63,8 @@ public abstract class BaseMenu extends JPanel implements BaseDisplay {
 
 ////////////////////////////////
 //////////GAME MENU/////////////
-////////////////////////////////
 class GameMenu extends BaseMenu {
+    // game menu will contain lucky9, slotmachine, and balance
 
     public GameMenu(JFrame frame) {
         super(frame);
@@ -88,9 +94,8 @@ class GameMenu extends BaseMenu {
 
 ////////////////////////////////
 //////////MAIN MENU/////////////
-////////////////////////////////
 class MainMenu extends BaseMenu {
-
+    // main menu is the menu on start
     public MainMenu(JFrame frame) {
         super(frame);
 
@@ -106,6 +111,7 @@ class MainMenu extends BaseMenu {
         addButton(exitIcon, e -> saveAndExit());
     }
 
+    // save and exit method.. yeah...
     private void saveAndExit() {
         PlayerStorage.saveData();
         System.exit(0);
