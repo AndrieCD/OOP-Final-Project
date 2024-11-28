@@ -62,6 +62,7 @@ public class Lucky9 extends Game {
     
 
     private void startGame() {
+        PlayerStorage.setTotalSpins(PlayerStorage.getTotalSpins() + 1); //add counter to total spins
         // Clear hands for a new game
         playerHand.clear();
         dealerHand.clear();
