@@ -32,30 +32,30 @@ class Balance extends BaseMenu {
         globalLoanPool = 777 - PlayerStorage.getLoanAmount();
         System.out.println("Global loan pool: " + globalLoanPool);
 
-        // Set layout to a 2x2 grid
+        //layout setting for the boxes or grid to be 2x2
         buttonPanel.setLayout(new GridLayout(2, 2, 10, 10)); // 2 rows, 2 columns, 10px gaps
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(290, 150, 195, 150)); // Padding around grid
 
-        // Label for current balance
+        //current balance label
         balanceLabel = new JLabel("Current Balance: " + PlayerStorage.getMoney() + " coins");
         balanceLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
         balanceLabel.setForeground(Color.WHITE);
         balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
         buttonPanel.add(balanceLabel);
 
-        // Label for current loan
+        //current loan label
         loanLabel = new JLabel("Current Loan: " + PlayerStorage.getLoanAmount() + " coins");
         loanLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
         loanLabel.setForeground(Color.WHITE);
         loanLabel.setHorizontalAlignment(SwingConstants.CENTER);
         buttonPanel.add(loanLabel);
 
-        // Loan button
+        //button for loan
         ImageIcon loanIcon = new ImageIcon("src/images/buttons/loan_button.png");
         loanButton = addButton(loanIcon, e -> promptLoanInput());
         buttonPanel.add(loanButton);
 
-        // Back button
+        //button for back
         ImageIcon backIcon = new ImageIcon("src/images/buttons/back_button.png");
         backButton = addButton(backIcon, e -> navigateTo(new GameMenu(frame)));
         buttonPanel.add(backButton);
@@ -63,13 +63,8 @@ class Balance extends BaseMenu {
         updateUIComponents();
     }
 
-    // Inputting how much the user wants to loan
+    //input for how much the user wants to loan
     private void promptLoanInput() {
-        if (globalLoanPool <= 0) {
-            JOptionPane.showMessageDialog(frame, "The loan pool is empty. No more loans can be taken.",
-                    "Loan Unavailable", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
 
         String input = JOptionPane.showInputDialog(frame, "Enter the loan amount (Available: " + globalLoanPool + "):",
                 "Borrow Loan", JOptionPane.PLAIN_MESSAGE);
