@@ -21,7 +21,7 @@ public class Lucky9 extends Game {
     public Lucky9(JFrame frame) {
         super(frame);
 
-        // Initialize card icons and hands
+        // Initialize card and hands
         icons = new String[] { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
         playerHand = new ArrayList<>();
         dealerHand = new ArrayList<>(); 
@@ -37,6 +37,8 @@ public class Lucky9 extends Game {
         topPanel.add(dealerHandPanel, BorderLayout.SOUTH);
 
         frame.add(topPanel, BorderLayout.CENTER);
+
+        this.multiplier = 2.00;
 
         // Initialize the game display
         initializeDisplay();
@@ -92,9 +94,9 @@ public class Lucky9 extends Game {
                                                 JOptionPane.INFORMATION_MESSAGE);
 
             determineWinner(playerScore, dealerScore);
-
+            
             processWinLoss();
-
+            
             updateMoneyLabel();
 
             return;
@@ -116,8 +118,9 @@ public class Lucky9 extends Game {
                                                 JOptionPane.INFORMATION_MESSAGE);
 
             determineWinner(playerScore, dealerScore);
-
+            
             processWinLoss();
+            
 
             updateMoneyLabel();
 
@@ -141,6 +144,11 @@ public class Lucky9 extends Game {
             showDealerHandFinal(dealerHand);
             //recalculate player score
             playerScore = calculateHandScore(playerHand);
+        }
+
+        if (selection == 1)
+        {
+            showDealerHandFinal(dealerHand);
         }
         //show score
         JOptionPane.showMessageDialog(null, "Player Score: " + playerScore + "\nDealer Score: " + dealerScore,
@@ -169,7 +177,7 @@ public class Lucky9 extends Game {
 
         // Determine the winner (optional logic)
         determineWinner(playerScore, dealerScore);
-
+        
         processWinLoss();
         //update money label
         updateMoneyLabel();
