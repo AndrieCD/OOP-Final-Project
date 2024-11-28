@@ -14,7 +14,6 @@ public class Lucky9 extends Game {
     private JLabel dealerHandLabel;
     private ArrayList<String> playerHand;
     private ArrayList<String> dealerHand;
-    private int bet;
     private JPanel playerHandPanel;
     private JPanel dealerHandPanel;
 
@@ -192,11 +191,11 @@ public class Lucky9 extends Game {
     {
         if (playerScore > dealerScore) 
         {
-            this.multiplier = 100.0;
+            this.multiplier = 1.5;
             JOptionPane.showMessageDialog(null, "Player wins!", "Result", JOptionPane.INFORMATION_MESSAGE);
         } else if (dealerScore > playerScore) 
         {
-            this.multiplier = 1.0;
+            this.multiplier = 0.0;
             JOptionPane.showMessageDialog(null, "Dealer wins!", "Result", JOptionPane.INFORMATION_MESSAGE);
         } else 
         {
