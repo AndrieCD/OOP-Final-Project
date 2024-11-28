@@ -50,6 +50,7 @@ public class Lucky9 extends Game {
     }
 
     private void loadCardImages() {
+        cardImages = new HashMap<>();
         cardImages.put("Ace", "src/images/ace.png");
         cardImages.put("2", "src/images/2.png");
         cardImages.put("3", "src/images/3.png");
@@ -63,6 +64,8 @@ public class Lucky9 extends Game {
         cardImages.put("Jack", "src/images/jack.png");
         cardImages.put("Queen", "src/images/queen.png");
         cardImages.put("King", "src/images/king.png");
+
+        
     }
 
     private void dealCardToPlayer() {
@@ -108,15 +111,55 @@ public class Lucky9 extends Game {
         dealCardToPlayer();
         dealCardToDealer();
 
+        updateHandDisplay(playerHand, playerHandPanel);
+        updateHandDisplay(dealerHand, dealerHandPanel);
+
         // Calculate and display scores
         int playerScore = calculateHandScore(playerHand);
         int dealerScore = calculateHandScore(dealerHand);
+
+        //for natural 9s
+        /*
+        if (playerScore == 9){
+            System.out.println("Player Natural 9! PLAYER WINS!");
+            System.exit(0);
+         }
+        */
+
+        /* prompt player if he wants to draw more
+        System.out.print("Do you want to draw another card? (Yes/No): ");
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("yes")) {
+            playerHand.add(deck.dealCard());
+            playerScore = calculateScore(playerHand);
+            System.out.println("Player's New Hand: " + playerHand);
+            System.out.println("Dealer's Hand: " + dealerHand);
+        } */
+
+        /* if dealer  has less than or equal to 4 value of cards they draw more
+        if (dealerScore <= 4){
+            System.out.println("Dealer score is less than or equal to 4!\nThey draw another card!");
+            
+            //add new card to dealer's hand
+            dealCardToDealer();
+            
+            //recalculate dealer's score
+            dealerScore = calculateHandScore(dealerHand);
+            
+            System.out.println("Player's Hand: " + playerHand);
+            System.out.println("Dealer's New Hand: " + dealerHand);
+            
+            System.out.println("Player: " + playerScore);
+            System.out.println("Dealer: " + dealerScore);
+        } */
 
         JOptionPane.showMessageDialog(null, "Player Score: " + playerScore + "\nDealer Score: " + dealerScore,
                 "Game Start", JOptionPane.INFORMATION_MESSAGE);
 
         // Determine the winner (optional logic)
         determineWinner(playerScore, dealerScore);
+
+        processWinLoss();
     }
 
     private void determineWinner(int playerScore, int dealerScore) {
@@ -153,7 +196,7 @@ public class Lucky9 extends Game {
         bettingPanel.add(betLabel);
         bettingPanel.add(betInput);
     
-        // MONEy Label
+        // MONEY Label
         moneyLabel = new JLabel("Money: " + PlayerStorage.getMoney());
         moneyLabel.setForeground(Color.WHITE);
         moneyLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the text horizontally
